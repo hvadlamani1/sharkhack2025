@@ -65,10 +65,6 @@ function toggleConsumerFields(userType) {
     const farmerFields = document.getElementById('farmerFields');
     const consumerInputs = consumerFields.querySelectorAll('input, select');
     const farmerInputs = farmerFields.querySelectorAll('input');
-    const registerForm = document.getElementById('registerForm');
-    
-    // Show the registration form
-    registerForm.classList.remove('hidden');
     
     if (userType === 'consumer') {
         consumerFields.classList.remove('hidden');
@@ -81,9 +77,6 @@ function toggleConsumerFields(userType) {
         consumerInputs.forEach(input => input.required = false);
         farmerInputs.forEach(input => input.required = true);
     }
-
-    // Hide user type selection
-    document.getElementById('userTypeSelection')?.classList.add('hidden');
 }
 
 // Handle registration

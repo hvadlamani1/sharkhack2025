@@ -34,7 +34,7 @@
                         <li>Reduce food waste</li>
                         <li>Get farming advice</li>
                     </ul>
-                    <a href="#" onclick="navigateTo('register', 'farmer')" class="cta-button">Register as Farmer</a>
+                    <button onclick="showRegistrationForm('farmer')" class="cta-button">Register as Farmer</button>
                 </div>
                 <div class="category-card">
                     <img src="images/consumer-icon.png" alt="Consumer Icon" class="category-icon">
@@ -46,7 +46,7 @@
                         <li>Know your food source</li>
                         <li>Get better prices</li>
                     </ul>
-                    <a href="#" onclick="navigateTo('register', 'consumer')" class="cta-button">Register as Consumer</a>
+                    <button onclick="showRegistrationForm('consumer')" class="cta-button">Register as Consumer</button>
                 </div>
             </div>
         </section>
@@ -136,7 +136,7 @@
                     
                     <!-- Common Fields -->
                     <div class="form-group">
-                        <label for="name">Name:</label>
+                        <label for="name">Full Name:</label>
                         <input type="text" id="name" name="name" required>
                     </div>
                     <div class="form-group">
@@ -145,7 +145,11 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" required>
+                        <input type="password" id="password" name="password" minlength="2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number:</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber">
                     </div>
 
                     <!-- Consumer Specific Fields -->
@@ -155,25 +159,35 @@
                             <input type="text" id="businessName" name="businessName">
                         </div>
                         <div class="form-group">
-                            <label for="location">Location:</label>
-                            <input type="text" id="location" name="location">
-                        </div>
-                        <div class="form-group">
-                            <label for="phoneNumber">Phone Number:</label>
-                            <input type="tel" id="phoneNumber" name="phoneNumber">
-                        </div>
-                        <div class="form-group">
-                            <label for="businessType">Type of Business:</label>
+                            <label for="businessType">Business Type:</label>
                             <select id="businessType" name="businessType">
-                                <option value="">Select Business Type</option>
-                                <option value="Food Chain Manager">Food Chain Manager</option>
-                                <option value="Caterer">Caterer</option>
+                                <option value="">Select business type...</option>
                                 <option value="Restaurant">Restaurant</option>
-                                <option value="Wholesale Distributor">Wholesale Distributor</option>
                                 <option value="Grocery Store">Grocery Store</option>
+                                <option value="Food Processing">Food Processing</option>
                                 <option value="Food Bank/Shelter">Food Bank/Shelter</option>
                                 <option value="Other">Other</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <!-- Farmer Specific Fields -->
+                    <div id="farmerFields" class="hidden">
+                        <div class="form-group">
+                            <label for="farmName">Farm Name:</label>
+                            <input type="text" id="farmName" name="farmName">
+                        </div>
+                        <div class="form-group">
+                            <label for="farmLocation">Farm Location:</label>
+                            <input type="text" id="farmLocation" name="farmLocation">
+                        </div>
+                        <div class="form-group">
+                            <label for="farmSize">Farm Size (acres):</label>
+                            <input type="number" id="farmSize" name="farmSize" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="certifications">Certifications (optional):</label>
+                            <input type="text" id="certifications" name="certifications" placeholder="e.g., Organic, GAP, etc.">
                         </div>
                     </div>
 

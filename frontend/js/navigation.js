@@ -32,22 +32,22 @@ function showSection(sectionId) {
     }
 }
 
+// Show registration form based on user type
+function showRegistrationForm(userType) {
+    document.getElementById('userType').value = userType;
+    document.getElementById('registerForm').classList.remove('hidden');
+    document.getElementById('userTypeSelection').classList.add('hidden');
+    showSection('registerSection');
+    toggleConsumerFields(userType);
+}
+
 // Navigation function
-function navigateTo(page, userType = null, filters = null) {
+function navigateTo(page, filters = null) {
     // Hide all sections first
     document.querySelectorAll('.section').forEach(section => {
         section.classList.add('hidden');
     });
 
-    // Handle registration with user type
-    if (page === 'register' && userType) {
-        document.getElementById('userType').value = userType;
-        document.getElementById('registerForm').classList.remove('hidden');
-        toggleConsumerFields(userType);
-        showSection('registerSection');
-        return;
-    }
-    
     // Handle dashboard navigation
     if (page === 'dashboard') {
         const type = getUserType();
@@ -62,9 +62,10 @@ function navigateTo(page, userType = null, filters = null) {
     // Handle home navigation
     if (page === 'home' || !page) {
         if (!isLoggedIn()) {
-            showSection('registerSection');
-            // Make sure the registration form is visible initially
-            document.getElementById('registerForm')?.classList.remove('hidden');
+            showSection('guestHomeSection');
+            // Reset registration form
+            document.getElementById('registerForm')?.classList.add('hidden');
+            document.getElementById('userTypeSelection')?.classList.remove('hidden');
         } else {
             const type = getUserType();
             if (type === 'farmer') {
@@ -170,13 +171,8 @@ function showConsumerDashboard(filters = null) {
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // If not logged in, show registration section by default
-    if (!isLoggedIn()) {
-        showSection('registerSection');
-        document.getElementById('registerForm')?.classList.remove('hidden');
-    } else {
-        navigateTo('home');
-    }
+    // Show home page by default
+    navigateTo('home');
 });
 
 // Navigation event listeners
