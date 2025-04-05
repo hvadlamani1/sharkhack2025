@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm to Table</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Farm to Table</div>
+        <div class="nav-links">
+            <a href="#" class="nav-link" id="homeLink">Home</a>
+            <a href="#" class="nav-link" id="loginLink">Login</a>
+            <a href="#" class="nav-link" id="registerLink">Register</a>
+            <div class="auth-links hidden">
+                <a href="#" class="nav-link" id="dashboardLink">Dashboard</a>
+                <a href="#" class="nav-link" id="logoutLink">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Home Section -->
+        <section id="homeSection" class="section">
+            <h1>Welcome to Farm to Table</h1>
+            <div class="user-categories">
+                <div class="category-card">
+                    <h2>Farmer</h2>
+                    <p>List and sell your fresh produce directly to consumers</p>
+                    <button onclick="navigateTo('register', 'farmer')">Register as Farmer</button>
+                </div>
+                <div class="category-card">
+                    <h2>Consumer</h2>
+                    <p>Buy fresh, local produce directly from farmers</p>
+                    <button onclick="navigateTo('register', 'consumer')">Register as Consumer</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="loginSection" class="section hidden">
+            <div class="form-container">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Register Section -->
+        <section id="registerSection" class="section hidden">
+            <div class="form-container">
+                <h2>Register</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Name</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userType">User Type</label>
+                        <select id="userType" required>
+                            <option value="farmer">Farmer</option>
+                            <option value="consumer">Consumer</option>
+                        </select>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Farmer Dashboard Section -->
+        <section id="farmerDashboard" class="section hidden">
+            <h2>Farmer Dashboard</h2>
+            <div class="dashboard-container">
+                <div class="produce-form">
+                    <h3>Add New Produce</h3>
+                    <form id="produceForm">
+                        <div class="form-group">
+                            <label for="produceType">Produce Type</label>
+                            <input type="text" id="produceType" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount</label>
+                            <input type="number" id="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="measurement">Measurement</label>
+                            <select id="measurement" required>
+                                <option value="kg">Kilograms</option>
+                                <option value="lbs">Pounds</option>
+                                <option value="units">Units</option>
+                                <option value="boxes">Boxes</option>
+                                <option value="bushels">Bushels</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="grade">Grade</label>
+                            <select id="grade" required>
+                                <option value="A">Grade A</option>
+                                <option value="B">Grade B</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price per Measurement</label>
+                            <input type="number" id="price" step="0.01" required>
+                        </div>
+                        <button type="submit">Add Produce</button>
+                    </form>
+                </div>
+                <div class="my-listings">
+                    <h3>My Listings</h3>
+                    <div id="produceListings"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Consumer Dashboard Section -->
+        <section id="consumerDashboard" class="section hidden">
+            <h2>Available Produce</h2>
+            <div class="produce-grid" id="availableProduce">
+                <!-- Produce items will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/produce.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

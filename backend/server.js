@@ -20,9 +20,11 @@ mongoose.connect(process.env.MONGODB_URI)
 // Routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const produceRoutes = require('./routes/produce');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/produce', produceRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
