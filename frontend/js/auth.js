@@ -1,7 +1,7 @@
 // Auth state management
 let currentUser = null;
 
-// Check if user is logged in (token exists)
+// Check if user is logged in
 function isLoggedIn() {
     return localStorage.getItem('token') !== null;
 }
@@ -13,14 +13,19 @@ function getUserType() {
 }
 
 // Login function
-async function login(email, password) {
+async function handleLogin(event) {
+    event.preventDefault();
+    
     try {
         const response = await fetch('http://localhost:3000/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            })
         });
 
         const data = await response.json();
@@ -34,49 +39,107 @@ async function login(email, password) {
         localStorage.setItem('user', JSON.stringify(data.user));
         currentUser = data.user;
 
-        // Update UI based on user type
+        // Update UI and navigate to appropriate dashboard
         updateAuthUI();
-        
-        // Navigate to appropriate dashboard
         if (data.user.userType === 'farmer') {
             showFarmerDashboard();
         } else {
             showConsumerDashboard();
         }
 
-        return data;
     } catch (error) {
         console.error('Login error:', error);
-        throw error;
+        alert(error.message || 'Login failed');
     }
 }
 
-// Register function
-async function register(name, email, password, userType) {
+// Select user type for registration
+function selectUserType(type) {
+    document.getElementById('userType').value = type;
+    toggleConsumerFields(type);
+}
+
+// Toggle consumer-specific fields based on user type
+function toggleConsumerFields(userType) {
+    const consumerFields = document.getElementById('consumerFields');
+    const farmerFields = document.getElementById('farmerFields');
+    const consumerInputs = consumerFields.querySelectorAll('input, select');
+    const farmerInputs = farmerFields.querySelectorAll('input');
+    const registerForm = document.getElementById('registerForm');
+    
+    // Show the registration form
+    registerForm.classList.remove('hidden');
+    
+    if (userType === 'consumer') {
+        consumerFields.classList.remove('hidden');
+        farmerFields.classList.add('hidden');
+        consumerInputs.forEach(input => input.required = true);
+        farmerInputs.forEach(input => input.required = false);
+    } else {
+        consumerFields.classList.add('hidden');
+        farmerFields.classList.remove('hidden');
+        consumerInputs.forEach(input => input.required = false);
+        farmerInputs.forEach(input => input.required = true);
+    }
+
+    // Hide user type selection
+    document.getElementById('userTypeSelection')?.classList.add('hidden');
+}
+
+// Handle registration
+async function handleRegister(event) {
+    event.preventDefault();
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        userType: document.getElementById('userType').value
+    };
+
+    // Add user type specific fields
+    if (formData.userType === 'consumer') {
+        formData.businessName = document.getElementById('businessName').value;
+        formData.phoneNumber = document.getElementById('phoneNumber').value;
+        formData.businessType = document.getElementById('businessType').value;
+    } else {
+        formData.farmName = document.getElementById('farmName').value;
+        formData.farmLocation = document.getElementById('farmLocation').value;
+        formData.farmSize = document.getElementById('farmSize').value;
+        formData.certifications = document.getElementById('certifications').value;
+    }
+
     try {
         const response = await fetch('http://localhost:3000/api/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, email, password, userType })
+            body: JSON.stringify(formData)
         });
 
         const data = await response.json();
         
         if (!response.ok) {
-            throw new Error(data.message || 'Registration failed');
+            throw new Error(data.message);
         }
 
-        // Automatically log in after successful registration
-        return login(email, password);
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        currentUser = data.user;
+
+        // Update UI and navigate
+        updateAuthUI();
+        navigateTo('dashboard');
+
     } catch (error) {
         console.error('Registration error:', error);
-        throw error;
+        alert(error.message || 'Registration failed');
     }
 }
 
-// Logout function
+// Handle logout
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -88,49 +151,40 @@ function logout() {
 // Update UI based on auth state
 function updateAuthUI() {
     const isAuth = isLoggedIn();
-    const authLinks = document.querySelector('.auth-links');
     const loginLink = document.getElementById('loginLink');
-    const registerLink = document.getElementById('registerLink');
+    const dashboardLink = document.getElementById('dashboardLink');
+    const logoutLink = document.getElementById('logoutLink');
 
     if (isAuth) {
-        authLinks.classList.remove('hidden');
+        // Hide login, show dashboard/logout
         loginLink.classList.add('hidden');
-        registerLink.classList.add('hidden');
+        dashboardLink.classList.remove('hidden');
+        logoutLink.classList.remove('hidden');
+        showSection('dashboard');
     } else {
-        authLinks.classList.add('hidden');
+        // Show login, hide dashboard/logout
         loginLink.classList.remove('hidden');
-        registerLink.classList.remove('hidden');
+        dashboardLink.classList.add('hidden');
+        logoutLink.classList.add('hidden');
+        showSection('guestHomeSection');
     }
 }
 
 // Event Listeners
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    try {
-        await login(
-            document.getElementById('loginEmail').value,
-            document.getElementById('loginPassword').value
-        );
-    } catch (error) {
-        alert(error.message);
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize auth UI
+    updateAuthUI();
 });
 
-document.getElementById('registerForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    try {
-        await register(
-            document.getElementById('registerName').value,
-            document.getElementById('registerEmail').value,
-            document.getElementById('registerPassword').value,
-            document.getElementById('userType').value
-        );
-    } catch (error) {
-        alert(error.message);
-    }
-});
-
-document.getElementById('logoutLink').addEventListener('click', (e) => {
+document.getElementById('loginForm')?.addEventListener('submit', handleLogin);
+document.getElementById('registerForm')?.addEventListener('submit', handleRegister);
+document.getElementById('logoutLink')?.addEventListener('click', (e) => {
     e.preventDefault();
     logout();
 });
+
+// Show register page by default when not logged in
+if (!isLoggedIn()) {
+    showSection('guestHomeSection');
+}
+

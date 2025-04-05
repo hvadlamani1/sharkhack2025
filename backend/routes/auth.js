@@ -5,7 +5,21 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, name, userType } = req.body;
+    const { 
+      email, 
+      password, 
+      name, 
+      userType,
+      // Consumer fields
+      businessName,
+      phoneNumber,
+      businessType,
+      // Farmer fields
+      farmName,
+      farmLocation,
+      farmSize,
+      certifications
+    } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -13,14 +27,31 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Create new user
-    const user = new User({
+    // Create new user with common fields
+    const userData = {
       email,
       password,
       name,
       userType
-    });
+    };
 
+    // Add user type specific fields
+    if (userType === 'consumer') {
+      Object.assign(userData, {
+        businessName,
+        phoneNumber,
+        businessType
+      });
+    } else if (userType === 'farmer') {
+      Object.assign(userData, {
+        farmName,
+        farmLocation,
+        farmSize,
+        certifications
+      });
+    }
+
+    const user = new User(userData);
     await user.save();
 
     // Create token

@@ -24,6 +24,48 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  // Consumer specific fields
+  businessName: {
+    type: String,
+    required: function() { return this.userType === 'consumer'; },
+    trim: true
+  },
+  phoneNumber: {
+    type: String,
+    required: function() { return this.userType === 'consumer'; },
+    trim: true
+  },
+  businessType: {
+    type: String,
+    required: function() { return this.userType === 'consumer'; },
+    enum: [
+      'Restaurant',
+      'Grocery Store',
+      'Food Processing',
+      'Food Bank/Shelter',
+      'Other'
+    ]
+  },
+  // Farmer specific fields
+  farmName: {
+    type: String,
+    required: function() { return this.userType === 'farmer'; },
+    trim: true
+  },
+  farmLocation: {
+    type: String,
+    required: function() { return this.userType === 'farmer'; },
+    trim: true
+  },
+  farmSize: {
+    type: Number,
+    required: function() { return this.userType === 'farmer'; },
+    min: 0
+  },
+  certifications: {
+    type: String,
+    trim: true
+  },
   createdAt: {
     type: Date,
     default: Date.now

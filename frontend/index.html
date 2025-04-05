@@ -10,30 +10,43 @@
     <nav class="navbar">
         <div class="nav-brand">Farm to Table</div>
         <div class="nav-links">
-            <a href="#" class="nav-link" id="homeLink">Home</a>
-            <a href="#" class="nav-link" id="loginLink">Login</a>
-            <a href="#" class="nav-link" id="registerLink">Register</a>
-            <div class="auth-links hidden">
-                <a href="#" class="nav-link" id="dashboardLink">Dashboard</a>
-                <a href="#" class="nav-link" id="logoutLink">Logout</a>
-            </div>
+            <a href="#" id="homeLink" class="nav-link active">Home</a>
+            <a href="#" id="loginLink" class="nav-link">Login</a>
+            <a href="#" id="dashboardLink" class="nav-link hidden">Dashboard</a>
+            <a href="#" id="logoutLink" class="nav-link hidden">Logout</a>
         </div>
     </nav>
 
     <main>
-        <!-- Guest Home Section -->
-        <section id="guestHomeSection" class="section">
+        <section id="guestHomeSection" class="section active">
             <h1>Welcome to Farm to Table</h1>
+            <div class="hero-section">
+                <p class="hero-text">Connecting local farmers directly with consumers for fresher produce and fairer prices.</p>
+            </div>
             <div class="user-categories">
                 <div class="category-card">
+                    <img src="images/farmer-icon.png" alt="Farmer Icon" class="category-icon">
                     <h2>Farmer</h2>
                     <p>List and sell your fresh produce directly to consumers</p>
-                    <button onclick="navigateTo('register', 'farmer')">Register as Farmer</button>
+                    <ul class="benefits-list">
+                        <li>Set your own prices</li>
+                        <li>Reach more customers</li>
+                        <li>Reduce food waste</li>
+                        <li>Get farming advice</li>
+                    </ul>
+                    <a href="#" onclick="navigateTo('register', 'farmer')" class="cta-button">Register as Farmer</a>
                 </div>
                 <div class="category-card">
+                    <img src="images/consumer-icon.png" alt="Consumer Icon" class="category-icon">
                     <h2>Consumer</h2>
                     <p>Buy fresh, local produce directly from farmers</p>
-                    <button onclick="navigateTo('register', 'consumer')">Register as Consumer</button>
+                    <ul class="benefits-list">
+                        <li>Access fresh produce</li>
+                        <li>Support local farmers</li>
+                        <li>Know your food source</li>
+                        <li>Get better prices</li>
+                    </ul>
+                    <a href="#" onclick="navigateTo('register', 'consumer')" class="cta-button">Register as Consumer</a>
                 </div>
             </div>
         </section>
@@ -98,40 +111,91 @@
         </section>
 
         <!-- Register Section -->
-        <section id="registerSection" class="section hidden">
+        <section id="registerSection" class="section">
             <div class="form-container">
                 <h2>Register</h2>
-                <form id="registerForm">
+                
+                <!-- User Type Selection -->
+                <div id="userTypeSelection" class="active">
+                    <h3>I am a:</h3>
+                    <div class="user-type-options">
+                        <div class="user-type-card" onclick="navigateTo('register', 'farmer')">
+                            <h4>Farmer</h4>
+                            <p>I want to sell produce</p>
+                        </div>
+                        <div class="user-type-card" onclick="navigateTo('register', 'consumer')">
+                            <h4>Consumer</h4>
+                            <p>I want to buy produce</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Form (Initially Hidden) -->
+                <form id="registerForm" onsubmit="handleRegister(event)" class="hidden">
+                    <input type="hidden" id="userType" name="userType" value="">
+                    
+                    <!-- Common Fields -->
                     <div class="form-group">
-                        <label for="registerName">Name</label>
-                        <input type="text" id="registerName" required>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="registerEmail">Email</label>
-                        <input type="email" id="registerEmail" required>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="registerPassword">Password</label>
-                        <input type="password" id="registerPassword" required>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
                     </div>
-                    <div class="form-group">
-                        <label for="userType">User Type</label>
-                        <select id="userType" required>
-                            <option value="farmer">Farmer</option>
-                            <option value="consumer">Consumer</option>
-                        </select>
+
+                    <!-- Consumer Specific Fields -->
+                    <div id="consumerFields" class="hidden">
+                        <div class="form-group">
+                            <label for="businessName">Business Name:</label>
+                            <input type="text" id="businessName" name="businessName">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location:</label>
+                            <input type="text" id="location" name="location">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessType">Type of Business:</label>
+                            <select id="businessType" name="businessType">
+                                <option value="">Select Business Type</option>
+                                <option value="Food Chain Manager">Food Chain Manager</option>
+                                <option value="Caterer">Caterer</option>
+                                <option value="Restaurant">Restaurant</option>
+                                <option value="Wholesale Distributor">Wholesale Distributor</option>
+                                <option value="Grocery Store">Grocery Store</option>
+                                <option value="Food Bank/Shelter">Food Bank/Shelter</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
                     </div>
+
                     <button type="submit">Register</button>
                 </form>
+                <p>Already have an account? <a href="#" onclick="navigateTo('login')">Login here</a></p>
             </div>
         </section>
 
         <!-- Farmer Dashboard Section -->
         <section id="farmerDashboard" class="section hidden">
-            <h2>Farmer Dashboard</h2>
-            <div class="dashboard-container">
-                <div class="produce-form">
-                    <h3>Add New Produce</h3>
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="showFarmerTab('listings')">My Listings</button>
+                <button class="tab-btn" onclick="showFarmerTab('history')">Listing History</button>
+                <button class="tab-btn" onclick="showFarmerTab('recent')">Recent Purchases</button>
+            </div>
+
+            <div id="listingsTab" class="tab-content">
+                <h2>My Produce Listings</h2>
+                <div class="dashboard-container">
+                    <div class="add-produce-container">
+                        <h3>Add New Produce</h3>
                     <form id="produceForm">
                         <div class="form-group">
                             <label for="produceType">Produce Type</label>
@@ -163,8 +227,13 @@
                             <input type="text" id="location" required>
                         </div>
                         <div class="form-group">
-                            <label for="price">Price per Measurement</label>
-                            <input type="number" id="price" step="0.01" required>
+                            <label for="price">Price per Measurement:</label>
+                            <input type="number" id="price" required min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="threshold">Donation Threshold (%):</label>
+                            <input type="number" id="threshold" required min="0" max="100" value="20">
+                            <small class="form-help">When produce quantity falls below this percentage, remaining produce will be donated to a food bank.</small>
                         </div>
                         <button type="submit">Add Produce</button>
                     </form>
@@ -178,54 +247,103 @@
 
         <!-- Consumer Dashboard Section -->
         <section id="consumerDashboard" class="section hidden">
-            <h2>Available Produce</h2>
-            <div class="filters-container">
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" onclick="showConsumerTab('browse')">Browse Produce</button>
+                <button class="tab-btn" onclick="showConsumerTab('purchases')">My Purchases</button>
+            </div>
+
+            <div id="browseTab" class="tab-content">
+                <h2>Available Produce</h2>
+                <div class="filters-container">
                 <div class="filter-group">
                     <input type="text" id="produceTypeFilter" placeholder="Search by produce type..." class="filter-input">
-                </div>
-                <div class="filter-group">
-                    <select id="measurementFilter" class="filter-input">
+                    <select id="measurementFilter">
                         <option value="">All Measurements</option>
                     </select>
-                </div>
-                <div class="filter-group">
-                    <select id="gradeFilter" class="filter-input">
+                    <select id="gradeFilter">
                         <option value="">All Grades</option>
                         <option value="A">Grade A</option>
                         <option value="B">Grade B</option>
                     </select>
-                </div>
-                <div class="filter-group">
-                    <input type="text" id="locationFilter" placeholder="Search by location..." class="filter-input">
-                </div>
-                <div class="filter-group price-range">
-                    <input type="number" id="minPriceFilter" placeholder="Min price" class="filter-input">
-                    <input type="number" id="maxPriceFilter" placeholder="Max price" class="filter-input">
-                </div>
-                <div class="filter-group">
-                    <select id="sortBy" class="filter-input">
-                        <option value="createdAt">Sort by Date</option>
-                        <option value="pricePerMeasurement">Sort by Price</option>
+                    <input type="number" id="minPriceFilter" placeholder="Min Price">
+                    <input type="number" id="maxPriceFilter" placeholder="Max Price">
+                    <input type="text" id="locationFilter" placeholder="Search by location">
+                    <select id="sortBy">
+                        <option value="date">Sort by Date</option>
+                        <option value="price">Sort by Price</option>
                         <option value="produceType">Sort by Type</option>
                     </select>
-                    <select id="sortOrder" class="filter-input">
-                        <option value="desc">Descending</option>
+                    <select id="sortOrder">
                         <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
                     </select>
                 </div>
+                <p id="totalCount">0 items found</p>
+                <div id="availableProduce" class="produce-grid"></div>
             </div>
-            <div class="produce-stats">
-                <span id="totalCount">0 items found</span>
+
             </div>
-            <div class="produce-grid" id="availableProduce">
-                <!-- Produce items will be dynamically added here -->
+
+            <!-- My Purchases Tab -->
+            <div id="purchasesTab" class="tab-content hidden">
+                <h2>My Purchase History</h2>
+                <div class="orders-summary">
+                    <div class="summary-card">
+                        <h3>Total Purchases</h3>
+                        <p id="totalPurchases">0</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Spent</h3>
+                        <p id="totalSpent">$0.00</p>
+                    </div>
+                </div>
+                <div id="myPurchases" class="orders-grid"></div>
             </div>
         </section>
+
+        <!-- Purchase Modal -->
+        <div id="purchaseModal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close" onclick="closePurchaseModal()">&times;</span>
+                <h2 style="margin-bottom: 1.5rem;">Purchase Produce</h2>
+                <form id="purchaseForm" onsubmit="handlePurchase(event)">
+                    <input type="hidden" id="produceId">
+                    <div class="form-group">
+                        <label>Produce Type</label>
+                        <div class="info-value" id="modalProduceType"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Available Amount</label>
+                        <div class="info-value" id="modalAvailableAmount"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Price per <span id="modalMeasurement"></span></label>
+                        <div class="info-value" id="modalPrice"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="purchaseQuantity">Quantity to Purchase</label>
+                        <input type="number" id="purchaseQuantity" required min="1" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Total Price</label>
+                        <div class="info-value total-price" id="modalTotalPrice">$0.00</div>
+                    </div>
+                    <button type="submit" class="submit-btn">Confirm Purchase</button>
+                </form>
+            </div>
+        </div>
+
     </main>
 
+    <!-- Core utilities and authentication -->
+    <script src="js/utils.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/navigation.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/orders.js"></script>
     <script src="js/produce.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/navigation.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

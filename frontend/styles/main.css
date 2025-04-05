@@ -11,6 +11,85 @@ body {
     background-color: #f4f4f4;
 }
 
+/* Notifications */
+.notifications-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.notifications-btn {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notifications-icon {
+    font-size: 1.2rem;
+}
+
+.notifications-count {
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(25%, -25%);
+}
+
+.notifications-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 0.5rem;
+}
+
+.notification-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item.unread {
+    background-color: #e3f2fd;
+}
+
+.notification-item .time {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.form-help {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: #666;
+}
+
 /* Navigation */
 .navbar {
     background-color: #333;
@@ -116,6 +195,51 @@ body {
     text-align: center;
 }
 
+/* User Type Selection */
+.user-type-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.user-type-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 2px solid #eee;
+}
+
+.user-type-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #4CAF50;
+}
+
+.user-type-card img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    background-color: #f8f8f8;
+    padding: 1rem;
+}
+
+.user-type-card h4 {
+    color: #333;
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.user-type-card p {
+    color: #666;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
 /* Forms */
 .form-container {
     background: white;
@@ -159,6 +283,205 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Dashboard Tabs */
+.dashboard-tabs {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.tab-btn:hover {
+    color: #333;
+}
+
+.tab-btn.active {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #4CAF50;
+}
+
+.tab-content {
+    display: block;
+}
+
+.tab-content.hidden {
+    display: none;
+}
+
+/* Order and Listing Cards */
+.order-card,
+.listing-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-card h3,
+.listing-card h3 {
+    margin: 0 0 1rem 0;
+    color: #333;
+}
+
+.order-card p,
+.listing-card p {
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.orders-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.orders-grid,
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Chatbot */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+}
+
+.chatbot-header {
+    background: #4CAF50;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.chatbot-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.chatbot-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+.chat-message {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-message.user {
+    align-items: flex-end;
+}
+
+.chat-message.bot {
+    align-items: flex-start;
+}
+
+.message-content {
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user .message-content {
+    background: #4CAF50;
+    color: white;
+}
+
+.bot .message-content {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.chatbot-input {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.chatbot-input input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+
+.chatbot-input button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.chatbot-input button:hover {
+    background: #45a049;
+}
+
+.chatbot-hidden {
+    display: none;
 }
 
 /* Dashboard */
@@ -227,9 +550,9 @@ button:hover {
 /* Produce Grid */
 .produce-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
 }
 
 .produce-card {
@@ -246,6 +569,123 @@ button:hover {
 
 .produce-info {
     margin-bottom: 0.5rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal:not(.hidden) {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.modal .form-group label {
+    color: #555;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.modal .info-value {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    padding: 0.5rem 0;
+}
+
+.modal .total-price {
+    font-size: 1.3rem;
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.modal .form-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.modal .form-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.modal .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal .submit-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-1px);
+}
+
+.modal .submit-btn:active {
+    transform: translateY(0);
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #333;
 }
 
 /* Responsive Design */

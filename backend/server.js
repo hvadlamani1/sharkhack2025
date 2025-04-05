@@ -21,10 +21,14 @@ mongoose.connect(process.env.MONGODB_URI)
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const produceRoutes = require('./routes/produce');
+const orderRoutes = require('./routes/orders');
+const chatbotRoutes = require('./routes/chatbot');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/produce', produceRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

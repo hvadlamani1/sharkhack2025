@@ -1,16 +1,3 @@
-// API calls with authentication
-async function authenticatedFetch(url, options = {}) {
-    const token = localStorage.getItem('token');
-    return fetch(url, {
-        ...options,
-        headers: {
-            ...options.headers,
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
-}
-
 // Add new produce listing
 async function addProduce(produceData) {
     try {
@@ -104,12 +91,27 @@ async function loadAvailableProduce() {
   try {
     const queryString = getFilterQueryString();
     const response = await fetch(`http://localhost:3000/api/produce?${queryString}`);
-    const data = await response.json();
+    const { produces, filterOptions, totalCount } = await response.json();
     
     const produceGrid = document.getElementById('availableProduce');
-    document.getElementById('totalCount').textContent = `${data.produces.length} items found`;
+    document.getElementById('totalCount').textContent = `${totalCount} items found`;
     
-    produceGrid.innerHTML = data.produces.map(produce => `
+    // Update filter options if they exist
+    if (filterOptions) {
+      const measurementFilter = document.getElementById('measurementFilter');
+      if (measurementFilter && filterOptions.measurements) {
+        measurementFilter.innerHTML = '<option value="">All Measurements</option>' +
+          filterOptions.measurements.map(m => `<option value="${m}">${m}</option>`).join('');
+      }
+
+      // Update price range inputs
+      if (filterOptions.minPrice !== undefined && filterOptions.maxPrice !== undefined) {
+        document.getElementById('minPriceFilter').min = filterOptions.minPrice;
+        document.getElementById('maxPriceFilter').max = filterOptions.maxPrice;
+      }
+    }
+    
+    produceGrid.innerHTML = produces.map(produce => `
       <div class="produce-card">
         <h3>${produce.produceType}</h3>
         <div class="produce-info">Amount: ${produce.amount} ${produce.measurement}</div>
@@ -118,6 +120,14 @@ async function loadAvailableProduce() {
         <div class="produce-info">Price: $${produce.pricePerMeasurement} per ${produce.measurement}</div>
         <div class="produce-info">Farmer: ${produce.farmer.name}</div>
         <div class="produce-info">Contact: ${produce.farmer.email}</div>
+        ${getUserType() === 'consumer' ? `
+          <button 
+                  class="purchase-btn"
+                  data-produce='${JSON.stringify(produce)}'
+                  ${produce.amount === 0 ? 'disabled' : ''}>
+            ${produce.amount === 0 ? 'Out of Stock' : 'Purchase'}
+          </button>
+        ` : ''}
       </div>
     `).join('');
   } catch (error) {
@@ -180,6 +190,14 @@ async function deleteProduce(produceId) {
         alert(error.message);
     }
 }
+
+// Event Listeners for purchase buttons
+document.addEventListener('click', function(e) {
+    if (e.target.matches('.purchase-btn') && !e.target.disabled) {
+        const produceData = e.target.dataset.produce;
+        showPurchaseModal(produceData);
+    }
+});
 
 // Event Listeners
 document.getElementById('produceForm').addEventListener('submit', async (e) => {

@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeFilters();
     setupFilterListeners();
     
+    // Initialize purchase functionality
+    if (getUserType() === 'consumer') {
+        loadAvailableProduce();
+        loadMyOrders();
+    }
+    
     // If user is logged in, redirect to appropriate dashboard
     if (isLoggedIn()) {
         navigateTo('dashboard');

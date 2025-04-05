@@ -1,6 +1,17 @@
 const mongoose = require('mongoose');
 
 const produceSchema = new mongoose.Schema({
+    thresholdPercentage: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100,
+        default: 20 // Default 20% threshold
+    },
+    thresholdReached: {
+        type: Boolean,
+        default: false
+    },
   farmer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -29,7 +40,7 @@ const produceSchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    required: true,
+    required: false,
     trim: true
   },
   pricePerMeasurement: {

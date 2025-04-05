@@ -12,22 +12,43 @@ const sections = {
 // Hide all sections
 function hideAllSections() {
     Object.values(sections).forEach(section => {
-        section.classList.add('hidden');
+        if (section) section.classList.add('hidden');
     });
 }
 
 // Show specific section
 function showSection(sectionId) {
-    hideAllSections();
-    sections[sectionId].classList.remove('hidden');
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+        section.classList.remove('active');
+    });
+    
+    // Show the requested section
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.classList.remove('hidden');
+        section.classList.add('active');
+    }
 }
 
 // Navigation function
 function navigateTo(page, userType = null, filters = null) {
+    // Hide all sections first
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+    });
+
+    // Handle registration with user type
     if (page === 'register' && userType) {
         document.getElementById('userType').value = userType;
+        document.getElementById('registerForm').classList.remove('hidden');
+        toggleConsumerFields(userType);
+        showSection('registerSection');
+        return;
     }
     
+    // Handle dashboard navigation
     if (page === 'dashboard') {
         const type = getUserType();
         if (type === 'farmer') {
@@ -38,9 +59,12 @@ function navigateTo(page, userType = null, filters = null) {
         return;
     }
 
-    if (page === 'home') {
+    // Handle home navigation
+    if (page === 'home' || !page) {
         if (!isLoggedIn()) {
-            showSection('guestHome');
+            showSection('registerSection');
+            // Make sure the registration form is visible initially
+            document.getElementById('registerForm')?.classList.remove('hidden');
         } else {
             const type = getUserType();
             if (type === 'farmer') {
@@ -67,7 +91,6 @@ async function showFarmerHome() {
     document.getElementById('farmerName').textContent = user.name;
 
     try {
-        // Get farmer's listings
         const response = await authenticatedFetch('http://localhost:3000/api/produce/farmer/my-listings');
         const listings = await response.json();
         document.getElementById('listingsCount').textContent = `${listings.length} Active Listings`;
@@ -97,12 +120,11 @@ async function showConsumerHome() {
     document.getElementById('consumerName').textContent = user.name;
 
     try {
-        // Get available produce count and featured items
         const response = await fetch('http://localhost:3000/api/produce');
         const data = await response.json();
         document.getElementById('availableCount').textContent = `${data.produces.length} Items Available`;
 
-        // Show featured items (newest listings)
+        // Show featured items
         const featuredItems = data.produces.slice(0, 3);
         document.getElementById('featuredItems').innerHTML = featuredItems.map(item => `
             <div class="featured-item">
@@ -147,22 +169,29 @@ function showConsumerDashboard(filters = null) {
 }
 
 // Event Listeners
-document.getElementById('homeLink').addEventListener('click', (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+    // If not logged in, show registration section by default
+    if (!isLoggedIn()) {
+        showSection('registerSection');
+        document.getElementById('registerForm')?.classList.remove('hidden');
+    } else {
+        navigateTo('home');
+    }
+});
+
+// Navigation event listeners
+document.getElementById('homeLink')?.addEventListener('click', (e) => {
     e.preventDefault();
     navigateTo('home');
 });
 
-document.getElementById('loginLink').addEventListener('click', (e) => {
+document.getElementById('loginLink')?.addEventListener('click', (e) => {
     e.preventDefault();
     navigateTo('login');
 });
 
-document.getElementById('registerLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    navigateTo('register');
-});
-
-document.getElementById('dashboardLink').addEventListener('click', (e) => {
+document.getElementById('dashboardLink')?.addEventListener('click', (e) => {
     e.preventDefault();
     navigateTo('dashboard');
 });
+
