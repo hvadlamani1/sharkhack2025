@@ -6,13 +6,13 @@ const Home = () => {
       <h1>Welcome to Our Platform</h1>
       <div className="user-categories">
         <div className="category-card">
-          <h2>User Category 1</h2>
-          <p>Description for first user category</p>
+          <h2>Farmer</h2>
+          <p>List and sell your fresh produce directly to consumers</p>
           <button>Get Started</button>
         </div>
         <div className="category-card">
-          <h2>User Category 2</h2>
-          <p>Description for second user category</p>
+          <h2>Consumer</h2>
+          <p>Buy fresh, local produce directly from farmers</p>
           <button>Get Started</button>
         </div>
       </div>

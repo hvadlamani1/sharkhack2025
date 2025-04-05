@@ -4,7 +4,7 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    userType: 'user1' // or 'user2'
+    userType: 'consumer' // or 'farmer'
   });
 
   const handleChange = (e) => {
@@ -32,8 +32,8 @@ const Login = () => {
             value={formData.userType}
             onChange={handleChange}
           >
-            <option value="user1">User Category 1</option>
-            <option value="user2">User Category 2</option>
+            <option value="farmer">Farmer</option>
+            <option value="consumer">Consumer</option>
           </select>
         </div>
 
