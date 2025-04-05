@@ -21,8 +21,8 @@
     </nav>
 
     <main>
-        <!-- Home Section -->
-        <section id="homeSection" class="section">
+        <!-- Guest Home Section -->
+        <section id="guestHomeSection" class="section">
             <h1>Welcome to Farm to Table</h1>
             <div class="user-categories">
                 <div class="category-card">
@@ -34,6 +34,47 @@
                     <h2>Consumer</h2>
                     <p>Buy fresh, local produce directly from farmers</p>
                     <button onclick="navigateTo('register', 'consumer')">Register as Consumer</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Farmer Home Section -->
+        <section id="farmerHomeSection" class="section hidden">
+            <h1>Welcome Back, <span id="farmerName"></span></h1>
+            <div class="dashboard-summary">
+                <div class="summary-card">
+                    <h3>My Listings</h3>
+                    <p id="listingsCount">Loading...</p>
+                    <button onclick="navigateTo('farmerDashboard')">Manage Listings</button>
+                </div>
+                <div class="summary-card">
+                    <h3>Quick Add</h3>
+                    <button onclick="navigateTo('farmerDashboard')">Add New Produce</button>
+                </div>
+                <div class="summary-card">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivity">Loading...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Consumer Home Section -->
+        <section id="consumerHomeSection" class="section hidden">
+            <h1>Welcome Back, <span id="consumerName"></span></h1>
+            <div class="dashboard-summary">
+                <div class="summary-card">
+                    <h3>Available Produce</h3>
+                    <p id="availableCount">Loading...</p>
+                    <button onclick="navigateTo('consumerDashboard')">Browse Produce</button>
+                </div>
+                <div class="summary-card">
+                    <h3>Featured Items</h3>
+                    <div id="featuredItems">Loading...</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Quick Filters</h3>
+                    <button onclick="navigateTo('consumerDashboard', null, { grade: 'A' })">Grade A Produce</button>
+                    <button onclick="navigateTo('consumerDashboard', null, { sortBy: 'pricePerMeasurement', sortOrder: 'asc' })">Best Prices</button>
                 </div>
             </div>
         </section>
@@ -138,6 +179,44 @@
         <!-- Consumer Dashboard Section -->
         <section id="consumerDashboard" class="section hidden">
             <h2>Available Produce</h2>
+            <div class="filters-container">
+                <div class="filter-group">
+                    <input type="text" id="produceTypeFilter" placeholder="Search by produce type..." class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <select id="measurementFilter" class="filter-input">
+                        <option value="">All Measurements</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="gradeFilter" class="filter-input">
+                        <option value="">All Grades</option>
+                        <option value="A">Grade A</option>
+                        <option value="B">Grade B</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <input type="text" id="locationFilter" placeholder="Search by location..." class="filter-input">
+                </div>
+                <div class="filter-group price-range">
+                    <input type="number" id="minPriceFilter" placeholder="Min price" class="filter-input">
+                    <input type="number" id="maxPriceFilter" placeholder="Max price" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <select id="sortBy" class="filter-input">
+                        <option value="createdAt">Sort by Date</option>
+                        <option value="pricePerMeasurement">Sort by Price</option>
+                        <option value="produceType">Sort by Type</option>
+                    </select>
+                    <select id="sortOrder" class="filter-input">
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="produce-stats">
+                <span id="totalCount">0 items found</span>
+            </div>
             <div class="produce-grid" id="availableProduce">
                 <!-- Produce items will be dynamically added here -->
             </div>

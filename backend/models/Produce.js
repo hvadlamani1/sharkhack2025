@@ -19,7 +19,7 @@ const produceSchema = new mongoose.Schema({
   measurement: {
     type: String,
     required: true,
-    enum: ['kg', 'lbs', 'units', 'boxes', 'bushels']
+    enum: ['kg', 'lbs', 'units', 'boxes', 'bushels', 'tons', 'quintals']
   },
   grade: {
     type: String,

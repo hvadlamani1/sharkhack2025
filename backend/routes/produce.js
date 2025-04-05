@@ -32,13 +32,116 @@ router.post('/', auth, isFarmer, async (req, res) => {
   }
 });
 
-// Get all produce listings
+// Get all produce listings with filters
 router.get('/', async (req, res) => {
   try {
-    const produces = await Produce.find({ available: true })
+    const {
+      produceType,
+      minPrice,
+      maxPrice,
+      grade,
+      measurement,
+      location,
+      sortBy,
+      sortOrder
+    } = req.query;
+
+    // Build filter object
+    const filter = { available: true };
+    
+    if (produceType) {
+      filter.produceType = { $regex: produceType, $options: 'i' };
+    }
+    
+    if (minPrice || maxPrice) {
+      filter.pricePerMeasurement = {};
+      if (minPrice) filter.pricePerMeasurement.$gte = Number(minPrice);
+      if (maxPrice) filter.pricePerMeasurement.$lte = Number(maxPrice);
+    }
+    
+    if (grade) {
+      filter.grade = grade.toUpperCase();
+    }
+    
+    if (measurement) {
+      filter.measurement = measurement;
+    }
+    
+    if (location) {
+      filter.location = { $regex: location, $options: 'i' };
+    }
+
+    // Build sort object
+    let sort = { createdAt: -1 }; // default sort
+    if (sortBy) {
+      sort = {
+        [sortBy]: sortOrder === 'desc' ? -1 : 1
+      };
+    }
+
+    const produces = await Produce.find(filter)
       .populate('farmer', 'name email')
-      .sort({ createdAt: -1 });
-    res.json(produces);
+      .sort(sort);
+
+    // Get unique values for filters
+    const aggregation = await Produce.aggregate([
+      { $match: { available: true } },
+      {
+        $group: {
+          _id: null,
+          produceTypes: { $addToSet: '$produceType' },
+          locations: { $addToSet: '$location' },
+          minPrice: { $min: '$pricePerMeasurement' },
+          maxPrice: { $max: '$pricePerMeasurement' },
+          measurements: { $addToSet: '$measurement' }
+        }
+      }
+    ]);
+
+    const filterOptions = aggregation[0] || {
+      produceTypes: [],
+      locations: [],
+      minPrice: 0,
+      maxPrice: 0,
+      measurements: []
+    };
+
+    res.json({
+      produces,
+      filterOptions,
+      totalCount: produces.length
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get available filter options
+router.get('/filter-options', async (req, res) => {
+  try {
+    const aggregation = await Produce.aggregate([
+      { $match: { available: true } },
+      {
+        $group: {
+          _id: null,
+          produceTypes: { $addToSet: '$produceType' },
+          locations: { $addToSet: '$location' },
+          minPrice: { $min: '$pricePerMeasurement' },
+          maxPrice: { $max: '$pricePerMeasurement' },
+          measurements: { $addToSet: '$measurement' }
+        }
+      }
+    ]);
+
+    const filterOptions = aggregation[0] || {
+      produceTypes: [],
+      locations: [],
+      minPrice: 0,
+      maxPrice: 0,
+      measurements: []
+    };
+
+    res.json(filterOptions);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
