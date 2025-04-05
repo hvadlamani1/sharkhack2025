@@ -76,6 +76,12 @@ function navigateTo(page, filters = null) {
         }
         return;
     }
+
+    // Handle login navigation
+    if (page === 'login') {
+        showSection('loginSection');
+        return;
+    }
     
     showSection(page);
 }
