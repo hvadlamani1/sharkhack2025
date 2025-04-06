@@ -6,7 +6,7 @@ const produceSchema = new mongoose.Schema({
         required: true,
         min: 0,
         max: 100,
-        default: 20 // Default 20% threshold
+        default: 0 // Default 20% threshold
     },
     thresholdReached: {
         type: Boolean,

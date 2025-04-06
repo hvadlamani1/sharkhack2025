@@ -75,6 +75,9 @@ window.handlePurchase = async function(event) {
         console.log('Sending purchase request:', { produceId, quantity });
         const response = await authenticatedFetch('http://localhost:3000/api/orders', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 produceId,
                 quantity
