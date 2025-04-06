@@ -23,11 +23,18 @@ async function addProduce(produceData) {
 // Load farmer's own listings
 async function loadFarmerListings() {
     try {
-        const response = await authenticatedFetch('http://localhost:3000/api/produce/farmer/my-listings');
-        const listings = await response.json();
+        // Load both active listings and history
+        const [activeResponse, historyResponse] = await Promise.all([
+            authenticatedFetch('http://localhost:3000/api/produce/farmer/my-listings'),
+            authenticatedFetch('http://localhost:3000/api/produce/farmer/history')
+        ]);
         
+        const activeListings = await activeResponse.json();
+        const historyListings = await historyResponse.json();
+        
+        // Update active listings
         const listingsContainer = document.getElementById('produceListings');
-        listingsContainer.innerHTML = listings.map(produce => `
+        listingsContainer.innerHTML = activeListings.map(produce => `
             <div class="produce-card" data-id="${produce._id}">
                 <h3>${produce.produceType}</h3>
                 <div class="produce-info">Amount: ${produce.amount} ${produce.measurement}</div>
@@ -35,6 +42,19 @@ async function loadFarmerListings() {
                 <div class="produce-info">Location: ${produce.location}</div>
                 <div class="produce-info">Price: $${produce.pricePerMeasurement} per ${produce.measurement}</div>
                 <button onclick="deleteProduce('${produce._id}')" class="delete-btn">Delete</button>
+            </div>
+        `).join('');
+
+        // Update history listings
+        const historyContainer = document.getElementById('produceHistory');
+        historyContainer.innerHTML = historyListings.map(produce => `
+            <div class="produce-card history-card" data-id="${produce._id}">
+                <h3>${produce.produceType}</h3>
+                <div class="produce-info">Original Amount: ${produce.originalAmount} ${produce.measurement}</div>
+                <div class="produce-info">Grade: ${produce.grade}</div>
+                <div class="produce-info">Location: ${produce.location}</div>
+                <div class="produce-info">Price: $${produce.pricePerMeasurement} per ${produce.measurement}</div>
+                <div class="produce-info">Deleted: ${new Date(produce.deletedAt).toLocaleDateString()}</div>
             </div>
         `).join('');
     } catch (error) {
@@ -184,7 +204,7 @@ async function deleteProduce(produceId) {
             throw new Error(data.message || 'Failed to delete produce');
         }
 
-        await loadFarmerListings(); // Refresh the listings
+        await loadFarmerListings(); // Refresh both active listings and history
     } catch (error) {
         console.error('Delete produce error:', error);
         alert(error.message);
