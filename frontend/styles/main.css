@@ -6,9 +6,10 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-light);
+    line-height: 1.5;
 }
 
 /* Notifications */
@@ -217,27 +218,22 @@ body {
 
 .user-type-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
     padding: 2rem;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 2px solid #eee;
+    transition: box-shadow 0.3s ease;
 }
 
 .user-type-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-color: #4CAF50;
+    box-shadow: var(--shadow-md);
 }
 
 .user-type-card img {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1rem;
-    border-radius: 50%;
-    background-color: #f8f8f8;
-    padding: 1rem;
+    width: 6rem;
+    height: 6rem;
+    margin: 0 auto 1.5rem;
 }
 
 .user-type-card h4 {
@@ -1100,41 +1096,40 @@ button:hover {
 
 /* Color Variables */
 :root {
-    --primary: #2C5282;        /* Deep blue */
-    --primary-light: #4299E1;  /* Light blue */
-    --primary-dark: #2A4365;   /* Dark blue */
-    --accent: #38A169;         /* Green for success/positive actions */
-    --accent-light: #48BB78;   /* Light green */
-    --danger: #E53E3E;         /* Red for dangerous actions */
-    --neutral-dark: #2D3748;   /* Dark gray */
-    --neutral: #718096;        /* Medium gray */
-    --neutral-light: #EDF2F7;  /* Light gray */
+    --primary-color: #10B981;
+    --primary-dark: #059669;
+    --text-primary: #1F2937;
+    --text-secondary: #4B5563;
+    --bg-light: #F9FAFB;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Button Styles */
 .btn-primary {
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    border: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    text-align: center;
 }
 
 .btn-primary:hover {
     background-color: var(--primary-dark);
-    transform: translateY(-1px);
 }
 
 .btn-secondary {
     background-color: white;
-    color: var(--primary);
+    color: var(--primary-color);
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-weight: 600;
     transition: all 0.2s ease;
-    border: 2px solid var(--primary);
+    border: 2px solid var(--primary-color);
 }
 
 .btn-secondary:hover {
@@ -1151,16 +1146,16 @@ button:hover {
     border-radius: 0.5rem;
     font-weight: 500;
     transition: all 0.2s ease;
-    border: 2px solid var(--primary);
+    border: 2px solid var(--primary-color);
     background-color: white;
-    color: var(--primary);
+    color: var(--primary-color);
     width: 100%;
 }
 
 .login-type-btn.active {
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     color: white;
-    border-color: var(--primary);
+    border-color: var(--primary-color);
 }
 
 .login-type-btn:hover {
@@ -1183,25 +1178,25 @@ button:hover {
 
 .form-input:focus {
     outline: none;
-    border-color: var(--primary);
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
 }
 
 /* Navigation Styles */
 .nav-link {
-    color: var(--neutral-dark);
+    color: var(--text-primary);
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
     transition: all 0.2s ease;
 }
 
 .nav-link:hover {
-    color: var(--primary);
-    background-color: var(--neutral-light);
+    color: var(--primary-color);
+    background-color: var(--bg-light);
 }
 
 .nav-link.active {
-    color: var(--primary);
+    color: var(--primary-color);
     font-weight: 600;
 }
 
@@ -1216,4 +1211,71 @@ button:hover {
 .card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Welcome section */
+.welcome-section {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Feature cards */
+.feature-card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.feature-card img {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+}
+
+/* Lists */
+.benefit-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+}
+
+.benefit-list li {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.benefit-list li::before {
+    content: "✓";
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-section {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .user-type-card,
+    .feature-card {
+        margin: 1rem;
+    }
 }

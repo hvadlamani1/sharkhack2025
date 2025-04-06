@@ -32,7 +32,7 @@ async function addProduce(produceData) {
 
         console.log('Using token:', token);
         
-        const response = await fetch('http://localhost:3000/api/produce/create', {
+        const response = await fetch('http://localhost:3000/api/produce', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,13 +41,26 @@ async function addProduce(produceData) {
             body: JSON.stringify(produceData)
         });
 
-        const data = await response.json();
-        console.log('Server response:', data);
-        
+        // Log the response for debugging
+        console.log('Response status:', response.status);
+        const responseText = await response.text();
+        console.log('Response text:', responseText);
+
         if (!response.ok) {
-            throw new Error(data.message || 'Failed to add produce');
+            throw new Error(`Server error: ${response.status} - ${responseText}`);
         }
 
+        // Try to parse the response as JSON
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            throw new Error('Invalid JSON response from server');
+        }
+        
+        console.log('Server response:', data);
+        
         hideAddProduceForm();
         await loadFarmerListings(); // Refresh the listings
         return data;
@@ -79,7 +92,7 @@ async function loadFarmerListings() {
         }
 
         console.log('Loading farmer listings...');
-        const response = await fetch('http://localhost:3000/api/produce/farmer-produce', {
+        const response = await fetch('http://localhost:3000/api/produce/farmer/my-listings', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -87,13 +100,24 @@ async function loadFarmerListings() {
             }
         });
 
+        // Log the response for debugging
+        console.log('Response status:', response.status);
+        const responseText = await response.text();
+        console.log('Response text:', responseText);
+
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Server error:', errorData);
-            throw new Error(errorData.message || 'Failed to fetch listings');
+            throw new Error(`Server error: ${response.status} - ${responseText}`);
         }
 
-        const listings = await response.json();
+        // Try to parse the response as JSON
+        let listings;
+        try {
+            listings = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            throw new Error('Invalid JSON response from server');
+        }
+
         console.log('Fetched listings:', listings);
         
         const listingsContainer = document.getElementById('farmerListings');
@@ -156,7 +180,7 @@ async function loadFarmerListings() {
                                 class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-md transition-colors duration-200">
                                 Edit
                             </button>
-                            <button onclick="deleteProduce('${listing._id}')"
+                            <button onclick="deleteProduce('${listing._id}')" 
                                 class="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-md transition-colors duration-200">
                                 Delete
                             </button>
@@ -176,6 +200,10 @@ async function loadFarmerListings() {
                 <div class="col-span-full text-center py-8 text-red-500">
                     <p class="text-lg">Failed to load listings. Please try again.</p>
                     <p class="text-sm mt-2">${error.message}</p>
+                    <button onclick="loadFarmerListings()" 
+                        class="mt-4 bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg transition-colors duration-200">
+                        Retry
+                    </button>
                 </div>
             `;
         }

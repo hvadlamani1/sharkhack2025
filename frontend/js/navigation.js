@@ -6,23 +6,41 @@ const sections = {
     login: document.getElementById('loginSection'),
     register: document.getElementById('registerSection'),
     farmerDashboard: document.getElementById('farmerDashboard'),
-    consumerDashboard: document.getElementById('consumerDashboard')
+    consumerDashboard: document.getElementById('consumerDashboard'),
+    tracking: document.getElementById('trackingSection'),
+    donations: document.getElementById('donationsSection'),
+    pricing: document.getElementById('pricingSection'),
+    logistics: document.getElementById('logisticsSection')
 };
 
 // Hide all sections
 function hideAllSections() {
     Object.values(sections).forEach(section => {
-        if (section) section.classList.add('hidden');
+        if (section) {
+            section.classList.add('hidden');
+            section.classList.remove('active');
+        }
+    });
+    
+    // Also hide guest sections
+    const guestSections = [
+        'guestWelcomeSection',
+        'guestUserTypeSection',
+        'guestFeaturesSection'
+    ];
+    
+    guestSections.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.style.display = 'none';
+        }
     });
 }
 
 // Show specific section
 function showSection(sectionId) {
-    // Hide all sections
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.add('hidden');
-        section.classList.remove('active');
-    });
+    // First hide all sections
+    hideAllSections();
     
     // Show the requested section
     const section = document.getElementById(sectionId);
@@ -57,80 +75,127 @@ function showRegistrationForm(userType) {
     }
 }
 
+// Show/hide guest sections
+function toggleGuestSections(show) {
+    const guestSections = [
+        'guestWelcomeSection',
+        'guestUserTypeSection',
+        'guestFeaturesSection',
+        'registerSection'  // Add register section to guest sections
+    ];
+    
+    guestSections.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.style.display = show ? 'block' : 'none';
+        }
+    });
+}
+
 // Navigation function
 function navigateTo(page, userType = null) {
+    console.log('Navigating to:', page); // Debug log
+    
     // Hide all sections first
-    document.querySelectorAll('.section').forEach(section => {
-        section.classList.add('hidden');
-    });
+    hideAllSections();
 
-    // Handle registration with user type
-    if (page === 'register' && userType) {
-        showSection('registerSection');
-        showRegistrationForm(userType);
-        return;
-    }
-
-    // Handle dashboard navigation
-    if (page === 'dashboard') {
-        const type = getUserType();
-        if (type === 'farmer') {
-            showFarmerDashboard();
-        } else {
-            showConsumerDashboard();
-        }
-        return;
-    }
-
-    // Handle tracking navigation
-    if (page === 'tracking') {
-        showSection('trackingSection');
-        return;
-    }
-
-    // Handle donations navigation
-    if (page === 'donations') {
-        showSection('donationsSection');
-        return;
-    }
-
-    // Handle pricing navigation
-    if (page === 'pricing') {
-        showSection('pricingSection');
-        return;
-    }
-
-    // Handle logistics navigation
-    if (page === 'logistics') {
-        showSection('logisticsSection');
-        return;
-    }
-
-    // Handle home navigation
-    if (page === 'home' || !page) {
-        if (!isLoggedIn()) {
-            showSection('guestHomeSection');
-            // Reset registration form
-            document.getElementById('registerForm')?.classList.add('hidden');
-            document.getElementById('userTypeSelection')?.classList.remove('hidden');
-        } else {
-            const type = getUserType();
-            if (type === 'farmer') {
-                showFarmerHome();
-            } else {
-                showConsumerHome();
-            }
-        }
-        return;
-    }
-
-    // Handle login navigation
-    if (page === 'login') {
+    // Check authentication for protected pages
+    const protectedPages = ['tracking', 'donations', 'pricing', 'logistics', 'dashboard'];
+    const isLoggedIn = localStorage.getItem('token');
+    
+    if (protectedPages.includes(page) && !isLoggedIn) {
+        console.log('Protected page, redirecting to login');
         showSection('loginSection');
         return;
     }
-    
-    showSection(page);
+
+    // Handle specific page navigation
+    switch (page) {
+        case 'home':
+            if (isLoggedIn) {
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user && user.type) {
+                    showSection(user.type + 'Dashboard');
+                } else {
+                    showSection('loginSection');
+                }
+            } else {
+                toggleGuestSections(true);
+            }
+            break;
+            
+        case 'tracking':
+            console.log('Showing tracking section');
+            showSection('trackingSection');
+            break;
+            
+        case 'donations':
+            showSection('donationsSection');
+            break;
+            
+        case 'pricing':
+            showSection('pricingSection');
+            break;
+            
+        case 'logistics':
+            showSection('logisticsSection');
+            break;
+            
+        case 'login':
+            if (isLoggedIn) {
+                navigateTo('home');
+                return;
+            }
+            showSection('loginSection');
+            break;
+            
+        case 'register':
+            if (isLoggedIn) {
+                navigateTo('home');
+                return;
+            }
+            showSection('registerSection');
+            if (userType) {
+                showRegistrationForm(userType);
+            }
+            break;
+            
+        case 'dashboard':
+            if (!isLoggedIn) {
+                showSection('loginSection');
+                return;
+            }
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.type === 'farmer') {
+                showSection('farmerDashboard');
+                loadFarmerListings();
+            } else {
+                showSection('consumerDashboard');
+                loadAvailableProduce();
+            }
+            break;
+    }
+
+    // Update navigation links
+    updateNavigationLinks();
+}
+
+// Update navigation links based on authentication
+function updateNavigationLinks() {
+    const isLoggedIn = localStorage.getItem('token');
+    const loginLink = document.getElementById('loginLink');
+    const logoutLink = document.getElementById('logoutLink');
+    const dashboardLink = document.getElementById('dashboardLink');
+
+    if (isLoggedIn) {
+        loginLink.classList.add('hidden');
+        logoutLink.classList.remove('hidden');
+        dashboardLink.classList.remove('hidden');
+    } else {
+        loginLink.classList.remove('hidden');
+        logoutLink.classList.add('hidden');
+        dashboardLink.classList.add('hidden');
+    }
 }
 
 // Show farmer home
@@ -224,25 +289,29 @@ function showConsumerDashboard(filters = null) {
     loadAvailableProduce();
 }
 
-// Event Listeners
+// Initialize navigation
 document.addEventListener('DOMContentLoaded', () => {
-    // Show home page by default
-    navigateTo('home');
-});
+    // Set up click handlers for all navigation links
+    document.querySelectorAll('[onclick^="navigateTo"]').forEach(link => {
+        // Extract the navigation target from the onclick attribute
+        const match = link.getAttribute('onclick').match(/navigateTo\('([^']+)'/);
+        if (match) {
+            const target = match[1];
+            // Replace onclick with addEventListener
+            link.removeAttribute('onclick');
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo(target);
+            });
+        }
+    });
 
-// Navigation event listeners
-document.getElementById('homeLink')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    navigateTo('home');
-});
-
-document.getElementById('loginLink')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    navigateTo('login');
-});
-
-document.getElementById('dashboardLink')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    navigateTo('dashboard');
+    // Navigate to initial page
+    const isLoggedIn = localStorage.getItem('token');
+    if (isLoggedIn) {
+        navigateTo('dashboard');
+    } else {
+        navigateTo('home');
+    }
 });
 

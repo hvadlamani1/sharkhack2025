@@ -25,67 +25,132 @@
     </header>
 
     <main>
-        <section id="guestHomeSection" class="section active">
-            <h1>Welcome to Farm to Table</h1>
-            <div class="hero-section">
-                <p class="hero-text">Connecting local farmers directly with consumers for fresher produce and fairer prices.</p>
+        <!-- Welcome Section -->
+        <div class="bg-gradient-to-r from-green-50 to-green-100 py-16 mb-12" id="guestWelcomeSection">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+                    Fresh From Farm to Your Table
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Experience the freshness of local produce while supporting your community farmers. Get better prices, fresher food, and a direct connection to the source.
+                </p>
             </div>
-            <div class="user-categories">
-                <div class="category-card">
-                    <img src="images/farmer-icon.svg" alt="Farmer Icon" class="category-icon">
-                    <h2>Farmer</h2>
-                    <p>List and sell your fresh produce directly to consumers</p>
-                    <ul class="benefits-list">
-                        <li>Set your own prices</li>
-                        <li>Reach more customers</li>
-                        <li>Reduce food waste</li>
-                        <li>Get farming advice</li>
-                    </ul>
-                    <button onclick="navigateTo('register', 'farmer')" class="cta-button">Register as Farmer</button>
-                </div>
-                <div class="category-card">
-                    <img src="images/consumer-icon.svg" alt="Consumer Icon" class="category-icon">
-                    <h2>Consumer</h2>
-                    <p>Buy fresh, local produce directly from farmers</p>
-                    <ul class="benefits-list">
-                        <li>Access fresh produce</li>
-                        <li>Support local farmers</li>
-                        <li>Know your food source</li>
-                        <li>Get better prices</li>
-                    </ul>
-                    <button onclick="navigateTo('register', 'consumer')" class="cta-button">Register as Consumer</button>
-                </div>
-            </div>
-        </section>
+        </div>
 
-        <!-- Benefits Section -->
-        <section class="benefits-section py-12 bg-gray-50">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center mb-8">Why Choose SmartFarm?</h2>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('tracking')">
-                        <div class="text-4xl text-green-500 mb-4">📊</div>
-                        <h3 class="text-xl font-semibold mb-2">Real-Time Tracking</h3>
-                        <p class="text-gray-600">Monitor your produce from farm to table with live updates and notifications.</p>
-                    </div>
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('donations')">
-                        <div class="text-4xl text-green-500 mb-4">🎯</div>
-                        <h3 class="text-xl font-semibold mb-2">Smart Donations</h3>
-                        <p class="text-gray-600">Automatically donate excess produce to local food banks and track your impact.</p>
-                    </div>
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('pricing')">
-                        <div class="text-4xl text-green-500 mb-4">💰</div>
-                        <h3 class="text-xl font-semibold mb-2">Fair Prices</h3>
-                        <p class="text-gray-600">Dynamic pricing ensures farmers get fair value and consumers get great deals.</p>
-                    </div>
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('logistics')">
-                        <div class="text-4xl text-green-500 mb-4">🚛</div>
-                        <h3 class="text-xl font-semibold mb-2">Smart Logistics</h3>
-                        <p class="text-gray-600">Optimized delivery routes and real-time order tracking for maximum efficiency.</p>
+        <!-- User Type Selection -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto px-4" id="guestUserTypeSection">
+            <!-- Farmer Card -->
+            <div class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow duration-300">
+                <div class="flex justify-center mb-6">
+                    <div class="w-32 h-32 flex items-center justify-center bg-green-50 rounded-full">
+                        <img src="assets/farmer-icon.svg" alt="Farmer" class="w-20 h-20">
                     </div>
                 </div>
+                <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">Farmer</h2>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        List and sell your fresh produce directly to consumers
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Set your own prices
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Reach more customers
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Reduce food waste
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Get farming advice
+                    </li>
+                </ul>
+                <button onclick="navigateTo('register', 'farmer')" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                    Register as Farmer
+                </button>
             </div>
-        </section>
+
+            <!-- Consumer Card -->
+            <div class="bg-white rounded-lg shadow-md p-8 hover:shadow-lg transition-shadow duration-300">
+                <div class="flex justify-center mb-6">
+                    <div class="w-32 h-32 flex items-center justify-center bg-green-50 rounded-full">
+                        <img src="assets/consumer-icon.svg" alt="Consumer" class="w-20 h-20">
+                    </div>
+                </div>
+                <h2 class="text-2xl font-semibold text-center text-gray-800 mb-4">Consumer</h2>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Buy fresh, local produce directly from farmers
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Access fresh produce
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Support local farmers
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Know your food source
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <span class="mr-2">✓</span>
+                        Get better prices
+                    </li>
+                </ul>
+                <button onclick="navigateTo('register', 'consumer')" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                    Register as Consumer
+                </button>
+            </div>
+        </div>
+
+        <!-- Features Section - Only shown on guest/home page -->
+        <div class="mt-16 mb-8" id="guestFeaturesSection">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Why Choose SmartFarm?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto px-4">
+                <!-- Real-Time Tracking -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer" onclick="navigateTo('tracking')">
+                    <div class="flex justify-center mb-4">
+                        <img src="assets/tracking-icon.svg" alt="Tracking" class="w-16 h-16">
+                    </div>
+                    <h3 class="text-xl font-semibold text-center text-gray-800 mb-3">Real-Time Tracking</h3>
+                    <p class="text-gray-600 text-center">Monitor your produce from farm to table with live updates and notifications.</p>
+                </div>
+
+                <!-- Smart Donations -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer" onclick="navigateTo('donations')">
+                    <div class="flex justify-center mb-4">
+                        <img src="assets/donation-icon.svg" alt="Donations" class="w-16 h-16">
+                    </div>
+                    <h3 class="text-xl font-semibold text-center text-gray-800 mb-3">Smart Donations</h3>
+                    <p class="text-gray-600 text-center">Automatically donate excess produce to local food banks and track your impact.</p>
+                </div>
+
+                <!-- Fair Prices -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer" onclick="navigateTo('pricing')">
+                    <div class="flex justify-center mb-4">
+                        <img src="assets/price-icon.svg" alt="Prices" class="w-16 h-16">
+                    </div>
+                    <h3 class="text-xl font-semibold text-center text-gray-800 mb-3">Fair Prices</h3>
+                    <p class="text-gray-600 text-center">Dynamic pricing ensures farmers get fair value and consumers get great deals.</p>
+                </div>
+
+                <!-- Smart Logistics -->
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer" onclick="navigateTo('logistics')">
+                    <div class="flex justify-center mb-4">
+                        <img src="assets/logistics-icon.svg" alt="Logistics" class="w-16 h-16">
+                    </div>
+                    <h3 class="text-xl font-semibold text-center text-gray-800 mb-3">Smart Logistics</h3>
+                    <p class="text-gray-600 text-center">Optimized delivery routes and real-time order tracking for maximum efficiency.</p>
+                </div>
+            </div>
+        </div>
 
         <!-- Farmer Home Section -->
         <section id="farmerHomeSection" class="section hidden">
@@ -137,7 +202,7 @@
                     <!-- Farmer Login Box -->
                     <div class="bg-white rounded-lg shadow-md p-8 border-2 border-transparent hover:border-green-500 transition-all duration-200">
                         <div class="flex items-center justify-center mb-6">
-                            <img src="images/farmer-icon.svg" alt="Farmer" class="w-12 h-12">
+                            <img src="assets/farmer-icon.svg" alt="Farmer" class="w-12 h-12">
                             <h3 class="text-xl font-semibold ml-3">Farmer Login</h3>
                         </div>
                         
@@ -163,7 +228,7 @@
                     <!-- Consumer Login Box -->
                     <div class="bg-white rounded-lg shadow-md p-8 border-2 border-transparent hover:border-green-500 transition-all duration-200">
                         <div class="flex items-center justify-center mb-6">
-                            <img src="images/consumer-icon.svg" alt="Consumer" class="w-12 h-12">
+                            <img src="assets/consumer-icon.svg" alt="Consumer" class="w-12 h-12">
                             <h3 class="text-xl font-semibold ml-3">Consumer Login</h3>
                         </div>
                         
@@ -719,12 +784,19 @@
     </main>
 
     <div id="root"></div>
-    <script src="js/navigation.js"></script>
+    <!-- Load dependencies first -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!-- Load core functionality -->
     <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    
+    <!-- Load feature modules -->
     <script src="js/produce.js"></script>
     <script src="js/tracking.js"></script>
     <script src="js/chat.js"></script>
+    
+    <!-- Load app initialization -->
     <script src="js/app.js"></script>
-    <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

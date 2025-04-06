@@ -32,7 +32,10 @@ const trackingData = [
 // Function to update tracking table
 function updateTrackingTable() {
     const trackingBody = document.getElementById('liveTrackingBody');
-    if (!trackingBody) return;
+    if (!trackingBody) {
+        console.error('Tracking table body not found');
+        return;
+    }
 
     trackingBody.innerHTML = trackingData.map(order => `
         <tr>
@@ -79,24 +82,29 @@ function getStatusColor(status) {
 // Function to simulate real-time updates
 function simulateRealTimeUpdates() {
     // Update temperatures
-    const temperatures = [4, 8, 5];
-    const trucks = ['Vegetables', 'Fruits', 'Mixed'];
+    const trucks = [
+        { type: 'Vegetables', temp: 4 },
+        { type: 'Fruits', temp: 8 },
+        { type: 'Mixed', temp: 5 }
+    ];
     
-    trucks.forEach((type, index) => {
+    trucks.forEach((truck, index) => {
         // Simulate temperature fluctuation
-        temperatures[index] += (Math.random() - 0.5);
-        const temp = temperatures[index].toFixed(1);
-        const tempElement = document.querySelector(`span:contains("Truck #${index + 1}")`).nextElementSibling;
-        if (tempElement) {
-            tempElement.textContent = `${temp}°C`;
+        truck.temp += (Math.random() - 0.5);
+        const temp = truck.temp.toFixed(1);
+        
+        // Update temperature display
+        const tempDisplay = document.querySelector(`#truck${index + 1}Temp`);
+        if (tempDisplay) {
+            tempDisplay.textContent = `${temp}°C`;
             
             // Update color based on temperature
-            if (temp > 7) {
-                tempElement.className = 'text-yellow-600 font-semibold';
-            } else if (temp > 9) {
-                tempElement.className = 'text-red-600 font-semibold';
+            if (parseFloat(temp) > 8) {
+                tempDisplay.className = 'text-red-600 font-semibold';
+            } else if (parseFloat(temp) > 6) {
+                tempDisplay.className = 'text-yellow-600 font-semibold';
             } else {
-                tempElement.className = 'text-green-600 font-semibold';
+                tempDisplay.className = 'text-green-600 font-semibold';
             }
         }
     });
@@ -105,7 +113,7 @@ function simulateRealTimeUpdates() {
     trackingData.forEach(order => {
         if (order.status === 'In Transit') {
             const etaHours = parseFloat(order.eta);
-            if (etaHours > 0) {
+            if (!isNaN(etaHours) && etaHours > 0) {
                 order.eta = `${(etaHours - 0.1).toFixed(1)} hours`;
             }
         }
@@ -117,62 +125,94 @@ function simulateRealTimeUpdates() {
 
 // Initialize tracking functionality
 function initializeTracking() {
-    // Set up WebSocket connection for real-time updates
-    const socket = new WebSocket('ws://localhost:3000');
+    console.log('Initializing tracking...');
     
-    socket.onmessage = function(event) {
-        const data = JSON.parse(event.data);
-        updateTrackingData(data);
-    };
-
-    // Initial load of tracking data
-    loadTrackingData();
-}
-
-// Load initial tracking data
-async function loadTrackingData() {
     try {
-        const response = await fetch('http://localhost:3000/api/tracking');
-        const data = await response.json();
-        updateTrackingData(data);
+        // Initial update of tracking table
+        updateTrackingTable();
+        
+        // Set up temperature displays
+        const trucks = ['Vegetables', 'Fruits', 'Mixed'];
+        trucks.forEach((type, index) => {
+            const tempDisplay = document.createElement('span');
+            tempDisplay.id = `truck${index + 1}Temp`;
+            tempDisplay.className = 'text-green-600 font-semibold';
+            tempDisplay.textContent = '5.0°C';
+            
+            const truckRow = document.querySelector(`div.space-y-4 div:nth-child(${index + 1})`);
+            if (truckRow) {
+                const tempSpan = truckRow.querySelector('span:nth-child(2)');
+                if (tempSpan) {
+                    tempSpan.replaceWith(tempDisplay);
+                }
+            }
+        });
+        
+        // Start real-time updates
+        setInterval(simulateRealTimeUpdates, 5000);
+        
+        // Try to connect to WebSocket for live updates
+        try {
+            const socket = new WebSocket('ws://localhost:3000');
+            
+            socket.onopen = () => {
+                console.log('WebSocket connected');
+            };
+            
+            socket.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.shipments) {
+                        trackingData.length = 0;
+                        trackingData.push(...data.shipments);
+                        updateTrackingTable();
+                    }
+                } catch (error) {
+                    console.error('Error processing WebSocket message:', error);
+                }
+            };
+            
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        } catch (error) {
+            console.error('Error setting up WebSocket:', error);
+        }
+        
     } catch (error) {
-        console.error('Error loading tracking data:', error);
+        console.error('Error in tracking initialization:', error);
     }
 }
 
-// Update tracking data in the UI
-function updateTrackingData(data) {
-    const trackingBody = document.getElementById('liveTrackingBody');
-    if (!trackingBody) return;
-
-    trackingBody.innerHTML = data.shipments.map(shipment => `
-        <tr>
-            <td class="px-6 py-4 whitespace-nowrap">${shipment.orderId}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${shipment.produce}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${shipment.from}</td>
-            <td class="px-6 py-4 whitespace-nowrap">${shipment.to}</td>
-            <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 py-1 text-xs font-semibold rounded-full 
-                    ${getStatusColor(shipment.status)}">
-                    ${shipment.status}
-                </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">${shipment.eta}</td>
-        </tr>
-    `).join('');
-}
-
-// Initialize when the tracking section becomes visible
-const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-        if (mutation.target.id === 'trackingSection' && 
-            !mutation.target.classList.contains('hidden')) {
-            initializeTracking();
-        }
+// Initialize tracking when the section becomes visible
+document.addEventListener('DOMContentLoaded', () => {
+    const trackingSection = document.getElementById('trackingSection');
+    if (!trackingSection) {
+        console.error('Tracking section not found');
+        return;
+    }
+    
+    // Create a mutation observer to watch for visibility changes
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && 
+                mutation.attributeName === 'class' &&
+                !trackingSection.classList.contains('hidden')) {
+                console.log('Tracking section became visible');
+                initializeTracking();
+            }
+        });
     });
-});
-
-observer.observe(document.getElementById('trackingSection'), {
-    attributes: true,
-    attributeFilter: ['class']
+    
+    // Start observing
+    observer.observe(trackingSection, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+    
+    // Check if tracking section is already visible
+    if (!trackingSection.classList.contains('hidden')) {
+        console.log('Tracking section is initially visible');
+        initializeTracking();
+    }
 }); 
