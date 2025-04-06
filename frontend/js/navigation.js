@@ -93,7 +93,7 @@ async function showFarmerHome() {
         return;
     }
 
-    showSection('farmerHome');
+    showSection('farmerHomeSection');
     const user = JSON.parse(localStorage.getItem('user'));
     document.getElementById('farmerName').textContent = user.name;
 
@@ -112,6 +112,8 @@ async function showFarmerHome() {
         `).join('') || 'No recent activity';
     } catch (error) {
         console.error('Error loading farmer home:', error);
+        document.getElementById('listingsCount').textContent = '0 Active Listings';
+        document.getElementById('recentActivity').innerHTML = 'No recent activity';
     }
 }
 
