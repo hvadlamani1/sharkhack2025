@@ -27,6 +27,10 @@ function initializeAuth() {
             currentUser = JSON.parse(localStorage.getItem('user'));
             updateAuthUI();
             navigateToUserDashboard();
+            // Initialize chatbot after successful auth
+            if (typeof initChatbot === 'function') {
+                initChatbot();
+            }
         } catch (error) {
             console.error('Error initializing auth state:', error);
             handleLogout();
@@ -46,6 +50,27 @@ function navigateToUserDashboard() {
     } else {
         console.error('Invalid user type:', userType);
         handleLogout();
+    }
+}
+
+// Handle successful login
+function handleSuccessfulLogin(userData) {
+    // Store token and user data
+    localStorage.setItem('token', userData.token);
+    localStorage.setItem('user', JSON.stringify(userData.user));
+    localStorage.setItem('userType', userData.user.userType);
+    currentUser = userData.user;
+
+    // Update UI and navigate
+    updateAuthUI();
+    navigateToUserDashboard();
+
+    // Clean up any existing chatbot and initialize new one
+    if (typeof cleanupChatbot === 'function') {
+        cleanupChatbot();
+    }
+    if (typeof initChatbot === 'function') {
+        initChatbot();
     }
 }
 
@@ -82,14 +107,7 @@ async function handleLogin(event, userType) {
             throw new Error(`Invalid login. This account is registered as a ${data.user.userType}`);
         }
 
-        // Store token and user data
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        currentUser = data.user;
-
-        // Update UI and navigate
-        updateAuthUI();
-        navigateToUserDashboard();
+        handleSuccessfulLogin(data);
 
     } catch (error) {
         console.error('Login error:', error);
@@ -161,14 +179,7 @@ async function handleRegister(event) {
             throw new Error(data.message);
         }
 
-        // Store token and user data
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        currentUser = data.user;
-
-        // Update UI and navigate
-        updateAuthUI();
-        navigateTo('dashboard');
+        handleSuccessfulLogin(data);
 
     } catch (error) {
         console.error('Registration error:', error);
@@ -179,10 +190,19 @@ async function handleRegister(event) {
 // Handle logout
 function handleLogout() {
     console.log('Logging out...');
+    
+    // Clean up chatbot
+    if (typeof cleanupChatbot === 'function') {
+        cleanupChatbot();
+    }
+    
+    // Clear auth data
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('userType');
     currentUser = null;
     selectedLoginType = null;
+    
     updateAuthUI();
     navigateTo('home');
 }
