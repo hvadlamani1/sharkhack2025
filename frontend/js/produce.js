@@ -32,13 +32,24 @@ async function addProduce(produceData) {
 
         console.log('Using token:', token);
         
-        const response = await fetch('http://localhost:3000/api/produce/create', {
+        // Transform the data to match backend model
+        const transformedData = {
+            produceType: produceData.name,
+            amount: produceData.quantity,
+            measurement: produceData.unit,
+            grade: produceData.grade,
+            location: produceData.location,
+            pricePerMeasurement: produceData.price,
+            thresholdPercentage: 20 // Default threshold
+        };
+        
+        const response = await fetch('http://localhost:3000/api/produce', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(produceData)
+            body: JSON.stringify(transformedData)
         });
 
         const data = await response.json();
@@ -79,7 +90,7 @@ async function loadFarmerListings() {
         }
 
         console.log('Loading farmer listings...');
-        const response = await fetch('http://localhost:3000/api/produce/farmer-produce', {
+        const response = await fetch('http://localhost:3000/api/produce/farmer/my-listings', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -144,7 +155,7 @@ async function loadFarmerListings() {
                             </div>
                             <div class="flex justify-between items-center text-gray-600">
                                 <span>Price:</span>
-                                <span class="font-medium">$${listing.price}/${listing.measurement}</span>
+                                <span class="font-medium">$${listing.pricePerMeasurement}/${listing.measurement}</span>
                             </div>
                             <div class="flex justify-between items-center text-gray-600">
                                 <span>Location:</span>
@@ -433,10 +444,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const form = document.getElementById('addProduceForm');
                 const editId = form.dataset.editId;
                 
+                // Updated field names to match backend model
                 const produceData = {
-                    produceType: document.getElementById('produceType').value,
-                    amount: Number(document.getElementById('amount').value),
-                    measurement: document.getElementById('measurement').value,
+                    name: document.getElementById('produceType').value,
+                    quantity: Number(document.getElementById('amount').value),
+                    unit: document.getElementById('measurement').value,
                     grade: document.getElementById('grade').value,
                     location: document.getElementById('location').value,
                     price: Number(document.getElementById('price').value)
@@ -506,7 +518,7 @@ async function editProduce(produceId) {
         document.getElementById('measurement').value = produce.measurement;
         document.getElementById('grade').value = produce.grade;
         document.getElementById('location').value = produce.location;
-        document.getElementById('price').value = produce.price;
+        document.getElementById('price').value = produce.pricePerMeasurement;
         
         // Show the form
         const form = document.getElementById('addProduceForm');
@@ -544,7 +556,7 @@ function createProduceCard(produce) {
             </div>
             <div class="produce-actions">
                 <div class="price-tag">
-                    <span class="currency">$</span>${produce.price}<span class="unit">/${produce.measurement}</span>
+                    <span class="currency">$</span>${produce.pricePerMeasurement}<span class="unit">/${produce.measurement}</span>
                 </div>
                 <button class="order-now-btn" onclick="orderProduce('${produce._id}')">
                     Order Now
@@ -609,4 +621,47 @@ function createFilterSection() {
             </div>
         </div>
     `;
+}
+
+async function orderProduce(produceId) {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Please log in to place an order');
+            return;
+        }
+
+        // Get quantity from user
+        const quantity = prompt('Enter quantity to order:');
+        if (!quantity || isNaN(quantity) || quantity <= 0) {
+            alert('Please enter a valid quantity');
+            return;
+        }
+
+        const response = await fetch('http://localhost:3000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                produceId: produceId,
+                quantity: Number(quantity)
+            })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to place order');
+        }
+
+        alert('Order placed successfully! The farmer will be notified.');
+        
+        // Refresh the produce listings to show updated quantities
+        await loadAvailableProduce();
+    } catch (error) {
+        console.error('Order produce error:', error);
+        alert(error.message || 'Failed to place order');
+    }
 }

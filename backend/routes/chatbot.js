@@ -1,39 +1,24 @@
 const router = require('express').Router();
 const { GoogleGenAI } = require('@google/genai');
 
-// Initialize Gemini AI
+// Initialize Gemini AI with the API key
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+// System prompt for agricultural advice
+const SYSTEM_PROMPT = `You are a concise agricultural advisor. Provide brief, practical farming advice in 2-3 sentences maximum. Focus on specific actionable steps with exact measurements and techniques. Keep responses short and to the point.`;
 
 // Chat endpoint
 router.post('/chat', async (req, res) => {
     try {
         const { message } = req.body;
         
-        // Generate response
+        // Combine system prompt with user message
+        const fullPrompt = `${SYSTEM_PROMPT}\n\nUser Question: ${message}`;
+        
+        // Generate response using the model
         const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash",
-            contents: message,
-            config: {
-                systemInstruction: `You are an expert agricultural advisor with deep knowledge in farming practices. Your expertise includes:
-
-1. Crop Management:
-- Soil preparation and nutrient management
-- Irrigation techniques and scheduling
-- Growth optimization methods
-- Pest and disease control strategies
-
-2. Produce Quality:
-- Post-harvest handling best practices
-- Storage optimization techniques
-- Quality assessment standards
-
-3. Market Insights:
-- Pricing strategies
-- Distribution channels
-- Cost optimization
-
-Provide specific, practical advice with exact measurements and techniques. Focus on sustainable farming practices.`,
-            }
+            model: "gemini-pro",
+            contents: fullPrompt,
         });
 
         res.json({ reply: response.text });
