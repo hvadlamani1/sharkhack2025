@@ -571,6 +571,32 @@ button:hover {
     margin-bottom: 0.5rem;
 }
 
+/* Listings section styles */
+.listings-section {
+    margin-top: 2rem;
+}
+
+.active-listings,
+.listing-history {
+    margin-bottom: 2rem;
+}
+
+.listings-section h3 {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.history-card {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    opacity: 0.85;
+}
+
+.history-card .produce-info {
+    color: #666;
+}
+
 /* Modal Styles */
 .modal {
     display: none;

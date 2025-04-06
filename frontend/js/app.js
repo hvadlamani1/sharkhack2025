@@ -17,6 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isLoggedIn()) {
         navigateTo('dashboard');
     } else {
-        navigateTo('home');
+        navigateTo('login');
     }
-});
+}); 

@@ -47,7 +47,7 @@ router.get('/', async (req, res) => {
     } = req.query;
 
     // Build filter object
-    const filter = { available: true };
+    const filter = { available: true, isDeleted: false };
     
     if (produceType) {
       filter.produceType = { $regex: produceType, $options: 'i' };
@@ -85,7 +85,7 @@ router.get('/', async (req, res) => {
 
     // Get unique values for filters
     const aggregation = await Produce.aggregate([
-      { $match: { available: true } },
+      { $match: { available: true, isDeleted: false } },
       {
         $group: {
           _id: null,
@@ -120,7 +120,7 @@ router.get('/', async (req, res) => {
 router.get('/filter-options', async (req, res) => {
   try {
     const aggregation = await Produce.aggregate([
-      { $match: { available: true } },
+      { $match: { available: true, isDeleted: false } },
       {
         $group: {
           _id: null,
@@ -199,18 +199,38 @@ router.delete('/:id', auth, isFarmer, async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to delete this listing' });
     }
 
-    await produce.deleteOne();
-    res.json({ message: 'Produce listing deleted' });
+    // Move to history instead of deleting
+    produce.isDeleted = true;
+    produce.deletedAt = new Date();
+    produce.originalAmount = produce.amount;
+    await produce.save();
+
+    res.json({ message: 'Listing moved to history' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Get all produce listings for the logged-in farmer
+// Get farmer's listing history
+router.get('/farmer/history', auth, isFarmer, async (req, res) => {
+  try {
+    const history = await Produce.find({
+      farmer: req.user.id,
+      isDeleted: true
+    }).sort({ deletedAt: -1 }); // Most recent first
+    res.json(history);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get farmer's active listings
 router.get('/farmer/my-listings', auth, isFarmer, async (req, res) => {
   try {
-    const produces = await Produce.find({ farmer: req.user.id })
-      .sort({ createdAt: -1 });
+    const produces = await Produce.find({ 
+      farmer: req.user.id,
+      isDeleted: false 
+    }).sort({ createdAt: -1 });
     res.json(produces);
   } catch (err) {
     res.status(500).json({ message: err.message });
