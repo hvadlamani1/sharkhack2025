@@ -34,19 +34,42 @@ function showSection(sectionId) {
 
 // Show registration form based on user type
 function showRegistrationForm(userType) {
-    document.getElementById('userType').value = userType;
-    document.getElementById('registerForm').classList.remove('hidden');
-    document.getElementById('userTypeSelection').classList.add('hidden');
+    // Show the registration section
     showSection('registerSection');
-    toggleConsumerFields(userType);
+    
+    // Set the user type
+    document.getElementById('userType').value = userType;
+    
+    // Hide user type selection and show the form
+    document.getElementById('userTypeSelection').classList.add('hidden');
+    document.getElementById('registerForm').classList.remove('hidden');
+    
+    // Toggle appropriate fields
+    const consumerFields = document.getElementById('consumerFields');
+    const farmerFields = document.getElementById('farmerFields');
+    
+    if (userType === 'consumer') {
+        consumerFields.classList.remove('hidden');
+        farmerFields.classList.add('hidden');
+    } else {
+        consumerFields.classList.add('hidden');
+        farmerFields.classList.remove('hidden');
+    }
 }
 
 // Navigation function
-function navigateTo(page, filters = null) {
+function navigateTo(page, userType = null) {
     // Hide all sections first
     document.querySelectorAll('.section').forEach(section => {
         section.classList.add('hidden');
     });
+
+    // Handle registration with user type
+    if (page === 'register' && userType) {
+        showSection('registerSection');
+        showRegistrationForm(userType);
+        return;
+    }
 
     // Handle dashboard navigation
     if (page === 'dashboard') {
@@ -54,8 +77,32 @@ function navigateTo(page, filters = null) {
         if (type === 'farmer') {
             showFarmerDashboard();
         } else {
-            showConsumerDashboard(filters);
+            showConsumerDashboard();
         }
+        return;
+    }
+
+    // Handle tracking navigation
+    if (page === 'tracking') {
+        showSection('trackingSection');
+        return;
+    }
+
+    // Handle donations navigation
+    if (page === 'donations') {
+        showSection('donationsSection');
+        return;
+    }
+
+    // Handle pricing navigation
+    if (page === 'pricing') {
+        showSection('pricingSection');
+        return;
+    }
+
+    // Handle logistics navigation
+    if (page === 'logistics') {
+        showSection('logisticsSection');
         return;
     }
 

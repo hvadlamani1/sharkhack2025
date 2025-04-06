@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Circle -->
+    <circle cx="50" cy="50" r="45" fill="#E8F5E9"/>
+    
+    <!-- Wheat Stalks -->
+    <g transform="translate(30,25) rotate(-15)">
+        <path d="M0 30 C10 25, 15 15, 15 0" stroke="#FFA000" stroke-width="3" fill="none"/>
+        <path d="M0 30 C5 25, 8 15, 8 0" stroke="#FFA000" stroke-width="3" fill="none"/>
+        <circle cx="15" cy="0" r="2" fill="#FFA000"/>
+        <circle cx="8" cy="0" r="2" fill="#FFA000"/>
+    </g>
+    <g transform="translate(70,25) rotate(15) scale(-1,1)">
+        <path d="M0 30 C10 25, 15 15, 15 0" stroke="#FFA000" stroke-width="3" fill="none"/>
+        <path d="M0 30 C5 25, 8 15, 8 0" stroke="#FFA000" stroke-width="3" fill="none"/>
+        <circle cx="15" cy="0" r="2" fill="#FFA000"/>
+        <circle cx="8" cy="0" r="2" fill="#FFA000"/>
+    </g>
+
+    <!-- Tractor -->
+    <g transform="translate(35,45)">
+        <!-- Tractor Body -->
+        <rect x="0" y="10" width="30" height="15" fill="#2E7D32" rx="2"/>
+        <!-- Cabin -->
+        <rect x="20" y="0" width="15" height="12" fill="#2E7D32" rx="2"/>
+        <!-- Wheels -->
+        <circle cx="8" cy="28" r="8" fill="#424242"/>
+        <circle cx="8" cy="28" r="4" fill="#757575"/>
+        <circle cx="28" cy="28" r="10" fill="#424242"/>
+        <circle cx="28" cy="28" r="5" fill="#757575"/>
+    </g>
+
+    <!-- Plants -->
+    <g transform="translate(15,60)">
+        <path d="M0 15 C5 10, 5 0, 0 0" stroke="#4CAF50" stroke-width="2" fill="none"/>
+        <path d="M0 15 C-5 10, -5 0, 0 0" stroke="#4CAF50" stroke-width="2" fill="none"/>
+        <path d="M0 0 L0 15" stroke="#4CAF50" stroke-width="2"/>
+    </g>
+    <g transform="translate(85,60)">
+        <path d="M0 15 C5 10, 5 0, 0 0" stroke="#4CAF50" stroke-width="2" fill="none"/>
+        <path d="M0 15 C-5 10, -5 0, 0 0" stroke="#4CAF50" stroke-width="2" fill="none"/>
+        <path d="M0 0 L0 15" stroke="#4CAF50" stroke-width="2"/>
+    </g>
+</svg> 

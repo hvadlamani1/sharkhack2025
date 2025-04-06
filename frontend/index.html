@@ -6,25 +6,23 @@
     <title>SmartFarm - Direct Farm to Consumer Platform</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50">
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 flex items-center">
-                        <img class="h-8 w-auto" src="assets/logo.svg" alt="SmartFarm">
-                        <span class="ml-2 text-xl font-semibold text-green-600">SmartFarm</span>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <a href="#" id="loginLink" class="text-gray-600 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                    <a href="#" id="dashboardLink" class="hidden bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                    <a href="#" id="logoutLink" class="hidden text-gray-600 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
-                </div>
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="assets/logo.svg" alt="SmartFarm Logo" class="h-8">
+                <span class="text-xl font-bold text-primary ml-2">SmartFarm</span>
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="#" onclick="navigateTo('tracking')" class="nav-link">Real-Time Tracking</a>
+                <a href="#" onclick="navigateTo('login')" id="loginLink" class="nav-link">Login</a>
+                <a href="#" onclick="navigateTo('dashboard')" id="dashboardLink" class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200 hidden">Dashboard</a>
+                <a href="#" onclick="logout()" id="logoutLink" class="nav-link hidden">Logout</a>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <main>
         <section id="guestHomeSection" class="section active">
@@ -34,7 +32,7 @@
             </div>
             <div class="user-categories">
                 <div class="category-card">
-                    <img src="images/farmer-icon.png" alt="Farmer Icon" class="category-icon">
+                    <img src="images/farmer-icon.svg" alt="Farmer Icon" class="category-icon">
                     <h2>Farmer</h2>
                     <p>List and sell your fresh produce directly to consumers</p>
                     <ul class="benefits-list">
@@ -43,10 +41,10 @@
                         <li>Reduce food waste</li>
                         <li>Get farming advice</li>
                     </ul>
-                    <button onclick="showRegistrationForm('farmer')" class="cta-button">Register as Farmer</button>
+                    <button onclick="navigateTo('register', 'farmer')" class="cta-button">Register as Farmer</button>
                 </div>
                 <div class="category-card">
-                    <img src="images/consumer-icon.png" alt="Consumer Icon" class="category-icon">
+                    <img src="images/consumer-icon.svg" alt="Consumer Icon" class="category-icon">
                     <h2>Consumer</h2>
                     <p>Buy fresh, local produce directly from farmers</p>
                     <ul class="benefits-list">
@@ -55,7 +53,7 @@
                         <li>Know your food source</li>
                         <li>Get better prices</li>
                     </ul>
-                    <button onclick="showRegistrationForm('consumer')" class="cta-button">Register as Consumer</button>
+                    <button onclick="navigateTo('register', 'consumer')" class="cta-button">Register as Consumer</button>
                 </div>
             </div>
         </section>
@@ -65,22 +63,22 @@
             <div class="container mx-auto px-4">
                 <h2 class="text-3xl font-bold text-center mb-8">Why Choose SmartFarm?</h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('tracking')">
                         <div class="text-4xl text-green-500 mb-4">📊</div>
                         <h3 class="text-xl font-semibold mb-2">Real-Time Tracking</h3>
                         <p class="text-gray-600">Monitor your produce from farm to table with live updates and notifications.</p>
                     </div>
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('donations')">
                         <div class="text-4xl text-green-500 mb-4">🎯</div>
                         <h3 class="text-xl font-semibold mb-2">Smart Donations</h3>
                         <p class="text-gray-600">Automatically donate excess produce to local food banks and track your impact.</p>
                     </div>
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('pricing')">
                         <div class="text-4xl text-green-500 mb-4">💰</div>
                         <h3 class="text-xl font-semibold mb-2">Fair Prices</h3>
                         <p class="text-gray-600">Dynamic pricing ensures farmers get fair value and consumers get great deals.</p>
                     </div>
-                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="navigateTo('logistics')">
                         <div class="text-4xl text-green-500 mb-4">🚛</div>
                         <h3 class="text-xl font-semibold mb-2">Smart Logistics</h3>
                         <p class="text-gray-600">Optimized delivery routes and real-time order tracking for maximum efficiency.</p>
@@ -132,25 +130,75 @@
 
         <!-- Login Section -->
         <section id="loginSection" class="section hidden">
-            <div class="form-container">
-                <h2>Login</h2>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="loginEmail">Email:</label>
-                        <input type="email" id="loginEmail" name="email" required>
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold text-center mb-6 text-neutral-dark">Login to SmartFarm</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Farmer Login Box -->
+                    <div class="bg-white rounded-lg shadow-md p-8 border-2 border-transparent hover:border-green-500 transition-all duration-200">
+                        <div class="flex items-center justify-center mb-6">
+                            <img src="images/farmer-icon.svg" alt="Farmer" class="w-12 h-12">
+                            <h3 class="text-xl font-semibold ml-3">Farmer Login</h3>
+                        </div>
+                        
+                        <form id="farmerLoginForm" class="space-y-4" onsubmit="handleLogin(event, 'farmer')">
+                            <div class="form-group">
+                                <label for="farmerEmail" class="block text-sm font-medium text-neutral-dark mb-1">Email</label>
+                                <input type="email" id="farmerEmail" name="email" required
+                                    class="form-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="farmerPassword" class="block text-sm font-medium text-neutral-dark mb-1">Password</label>
+                                <input type="password" id="farmerPassword" name="password" required
+                                    class="form-input">
+                            </div>
+
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                                Login as Farmer
+                            </button>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="loginPassword">Password:</label>
-                        <input type="password" id="loginPassword" name="password" required>
+
+                    <!-- Consumer Login Box -->
+                    <div class="bg-white rounded-lg shadow-md p-8 border-2 border-transparent hover:border-green-500 transition-all duration-200">
+                        <div class="flex items-center justify-center mb-6">
+                            <img src="images/consumer-icon.svg" alt="Consumer" class="w-12 h-12">
+                            <h3 class="text-xl font-semibold ml-3">Consumer Login</h3>
+                        </div>
+                        
+                        <form id="consumerLoginForm" class="space-y-4" onsubmit="handleLogin(event, 'consumer')">
+                            <div class="form-group">
+                                <label for="consumerEmail" class="block text-sm font-medium text-neutral-dark mb-1">Email</label>
+                                <input type="email" id="consumerEmail" name="email" required
+                                    class="form-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="consumerPassword" class="block text-sm font-medium text-neutral-dark mb-1">Password</label>
+                                <input type="password" id="consumerPassword" name="password" required
+                                    class="form-input">
+                            </div>
+
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                                Login as Consumer
+                            </button>
+                        </form>
                     </div>
-                    <button type="submit">Login</button>
-                </form>
-                <p>Don't have an account? <a href="#" onclick="navigateTo('home')">Register here</a></p>
+                </div>
+
+                <div class="mt-8 text-center text-sm text-neutral">
+                    <p>Don't have an account? 
+                        <a href="#" onclick="navigateTo('register')" class="text-green-600 hover:text-green-700 font-medium">
+                            Register here
+                        </a>
+                    </p>
+                </div>
             </div>
         </section>
 
         <!-- Register Section -->
-        <section id="registerSection" class="section">
+        <section id="registerSection" class="section hidden">
             <div class="form-container">
                 <h2>Register</h2>
                 
@@ -238,63 +286,111 @@
 
         <!-- Farmer Dashboard Section -->
         <section id="farmerDashboard" class="section hidden">
-            <div class="dashboard-tabs">
-                <button class="tab-btn active" onclick="showFarmerTab('listings')">My Listings</button>
-                <button class="tab-btn" onclick="showFarmerTab('history')">Listing History</button>
-                <button class="tab-btn" onclick="showFarmerTab('recent')">Recent Purchases</button>
-            </div>
-
-            <div id="listingsTab" class="tab-content">
-                <h2>My Produce Listings</h2>
-                <div class="dashboard-container">
-                    <div class="add-produce-container">
-                        <h3>Add New Produce</h3>
-                    <form id="produceForm">
-                        <div class="form-group">
-                            <label for="produceType">Produce Type</label>
-                            <input type="text" id="produceType" required>
+            <div class="container mx-auto px-4 py-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">My Produce Listings</h2>
+                    <button onclick="showAddProduceForm()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                        + Add New Produce
+                    </button>
+                </div>
+                
+                <!-- Add Produce Form (Initially Hidden) -->
+                <div id="addProduceForm" class="hidden bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-xl font-semibold mb-4">Add New Produce</h3>
+                    <form id="produceForm" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="produceType" class="block text-sm font-medium text-gray-700">Produce Type</label>
+                                <input type="text" id="produceType" name="produceType" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            </div>
+                            <div class="form-group">
+                                <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
+                                <input type="number" id="amount" name="amount" min="0" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            </div>
+                            <div class="form-group">
+                                <label for="measurement" class="block text-sm font-medium text-gray-700">Measurement</label>
+                                <select id="measurement" name="measurement" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="lbs">Pounds (lbs)</option>
+                                    <option value="units">Units</option>
+                                    <option value="boxes">Boxes</option>
+                                    <option value="bushels">Bushels</option>
+                                    <option value="tons">Tons</option>
+                                    <option value="quintals">Quintals</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grade" class="block text-sm font-medium text-gray-700">Grade</label>
+                                <select id="grade" name="grade" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                                    <option value="A">Grade A</option>
+                                    <option value="B">Grade B</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                                <input type="text" id="location" name="location" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            </div>
+                            <div class="form-group">
+                                <label for="price" class="block text-sm font-medium text-gray-700">Price per Measurement</label>
+                                <input type="number" id="price" name="price" min="0" step="0.01" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="amount">Amount</label>
-                            <input type="number" id="amount" required>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" onclick="hideAddProduceForm()" 
+                                class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md">
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">
+                                Add Produce
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="measurement">Measurement</label>
-                            <select id="measurement" required>
-                                <option value="">Select measurement...</option>
-                                <option value="kg">Kilograms</option>
-                                <option value="lbs">Pounds</option>
-                                <option value="units">Units</option>
-                                <option value="boxes">Boxes</option>
-                                <option value="bushels">Bushels</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="grade">Grade</label>
-                            <select id="grade" required>
-                                <option value="A">Grade A</option>
-                                <option value="B">Grade B</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="location">Location</label>
-                            <input type="text" id="location" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Price per Measurement:</label>
-                            <input type="number" id="price" required min="0" step="0.01">
-                        </div>
-                        <div class="form-group">
-                            <label for="threshold">Donation Threshold (%):</label>
-                            <input type="number" id="threshold" required min="0" max="100" value="20">
-                            <small class="form-help">When produce quantity falls below this percentage, remaining produce will be donated to a food bank.</small>
-                        </div>
-                        <button type="submit">Add Produce</button>
                     </form>
                 </div>
-                <div class="my-listings">
-                    <h3>My Listings</h3>
-                    <div id="produceListings"></div>
+
+                <!-- Farmer Listings Grid -->
+                <div id="farmerListings" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Listings will be loaded here -->
+                </div>
+
+                <!-- Chatbot Widget -->
+                <div id="chatbotWidget" class="fixed bottom-4 right-4 z-50">
+                    <!-- Chat Button -->
+                    <button id="chatToggleBtn" onclick="toggleChat()" class="bg-green-600 hover:bg-green-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                    </button>
+
+                    <!-- Chat Window -->
+                    <div id="chatWindow" class="hidden absolute bottom-16 right-0 w-96 bg-white rounded-lg shadow-xl">
+                        <div class="p-4 bg-green-600 text-white rounded-t-lg flex justify-between items-center">
+                            <h3 class="font-semibold">SmartFarm Assistant</h3>
+                            <button onclick="toggleChat()" class="text-white hover:text-gray-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="chatMessages" class="h-96 overflow-y-auto p-4 space-y-4">
+                            <!-- Messages will be added here -->
+                        </div>
+                        <div class="p-4 border-t">
+                            <form id="chatForm" onsubmit="sendMessage(event)" class="flex space-x-2">
+                                <input type="text" id="messageInput" placeholder="Type your message..." 
+                                    class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500">
+                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                                    Send
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -324,57 +420,71 @@
 
         <!-- Consumer Dashboard Section -->
         <section id="consumerDashboard" class="section hidden">
-            <div class="dashboard-tabs">
-                <button class="tab-btn active" onclick="showConsumerTab('browse')">Browse Produce</button>
-                <button class="tab-btn" onclick="showConsumerTab('purchases')">My Purchases</button>
-            </div>
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Available Produce</h2>
+                
+                <!-- Filters -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Filters</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <!-- Produce Type Filter -->
+                        <div class="form-group">
+                            <label for="produceTypeFilter" class="block text-sm font-medium text-gray-700 mb-2">Produce Type</label>
+                            <select id="produceTypeFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                                <option value="">All Types</option>
+                                <option value="vegetables">Vegetables</option>
+                                <option value="fruits">Fruits</option>
+                                <option value="grains">Grains</option>
+                                <option value="dairy">Dairy</option>
+                            </select>
+                        </div>
 
-            <div id="browseTab" class="tab-content">
-                <h2>Available Produce</h2>
-                <div class="filters-container">
-                <div class="filter-group">
-                    <input type="text" id="produceTypeFilter" placeholder="Search by produce type..." class="filter-input">
-                    <select id="measurementFilter">
-                        <option value="">All Measurements</option>
-                    </select>
-                    <select id="gradeFilter">
-                        <option value="">All Grades</option>
-                        <option value="A">Grade A</option>
-                        <option value="B">Grade B</option>
-                    </select>
-                    <input type="number" id="minPriceFilter" placeholder="Min Price">
-                    <input type="number" id="maxPriceFilter" placeholder="Max Price">
-                    <input type="text" id="locationFilter" placeholder="Search by location">
-                    <select id="sortBy">
-                        <option value="date">Sort by Date</option>
-                        <option value="price">Sort by Price</option>
-                        <option value="produceType">Sort by Type</option>
-                    </select>
-                    <select id="sortOrder">
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
-                </div>
-                <p id="totalCount">0 items found</p>
-                <div id="availableProduce" class="produce-grid"></div>
-            </div>
+                        <!-- Grade Filter -->
+                        <div class="form-group">
+                            <label for="gradeFilter" class="block text-sm font-medium text-gray-700 mb-2">Grade</label>
+                            <select id="gradeFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                                <option value="">All Grades</option>
+                                <option value="A">Grade A</option>
+                                <option value="B">Grade B</option>
+                            </select>
+                        </div>
 
-            </div>
+                        <!-- Price Range Filter -->
+                        <div class="form-group">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
+                            <div class="flex space-x-2">
+                                <input type="number" id="minPrice" placeholder="Min" min="0" 
+                                    class="w-1/2 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                                <input type="number" id="maxPrice" placeholder="Max" min="0"
+                                    class="w-1/2 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                            </div>
+                        </div>
 
-            <!-- My Purchases Tab -->
-            <div id="purchasesTab" class="tab-content hidden">
-                <h2>My Purchase History</h2>
-                <div class="orders-summary">
-                    <div class="summary-card">
-                        <h3>Total Purchases</h3>
-                        <p id="totalPurchases">0</p>
+                        <!-- Availability Filter -->
+                        <div class="form-group">
+                            <label for="availabilityFilter" class="block text-sm font-medium text-gray-700 mb-2">Availability</label>
+                            <select id="availabilityFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                                <option value="">All</option>
+                                <option value="in_stock">In Stock</option>
+                                <option value="low_stock">Low Stock</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="summary-card">
-                        <h3>Total Spent</h3>
-                        <p id="totalSpent">$0.00</p>
+                    
+                    <!-- Filter Actions -->
+                    <div class="flex justify-end mt-4 space-x-2">
+                        <button onclick="resetFilters()" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200">
+                            Reset Filters
+                        </button>
+                        <button onclick="applyFilters()" class="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700">
+                            Apply Filters
+                        </button>
                     </div>
                 </div>
-                <div id="myPurchases" class="orders-grid"></div>
+
+                <div id="availableProduce" class="space-y-4">
+                    <!-- Available produce will be loaded here -->
+                </div>
             </div>
         </section>
 
@@ -410,9 +520,211 @@
             </div>
         </div>
 
+        <!-- Real-time Tracking Section -->
+        <section id="trackingSection" class="section hidden">
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Real-time Produce Tracking</h2>
+                
+                <!-- Tracking Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h3 class="text-lg font-semibold text-gray-600">Active Shipments</h3>
+                        <p class="text-3xl font-bold text-green-600">24</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h3 class="text-lg font-semibold text-gray-600">On-time Delivery</h3>
+                        <p class="text-3xl font-bold text-green-600">98%</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h3 class="text-lg font-semibold text-gray-600">Total Distance</h3>
+                        <p class="text-3xl font-bold text-green-600">1,245 km</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <h3 class="text-lg font-semibold text-gray-600">Average Time</h3>
+                        <p class="text-3xl font-bold text-green-600">4.2 hrs</p>
+                    </div>
+                </div>
+
+                <!-- Real-Time Tracking Table -->
+                <div class="bg-white rounded-lg shadow-md p-6 mt-8">
+                    <div class="px-6 py-4 border-b">
+                        <h3 class="text-xl font-semibold">Live Shipments</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Produce</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">From</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ETA</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="liveTrackingBody">
+                                <!-- Tracking entries will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Temperature Monitoring -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-xl font-semibold mb-4">Temperature Monitoring</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Truck #1 (Vegetables)</span>
+                                <span class="text-green-600 font-semibold">4°C</span>
+                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Truck #2 (Fruits)</span>
+                                <span class="text-yellow-600 font-semibold">8°C</span>
+                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-600 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Truck #3 (Mixed)</span>
+                                <span class="text-green-600 font-semibold">5°C</span>
+                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Metrics -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-xl font-semibold mb-4">Quality Metrics</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Freshness Score</span>
+                                <span class="text-green-600 font-semibold">95%</span>
+                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 95%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Humidity Level</span>
+                                <span class="text-blue-600 font-semibold">85%</span>
+                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Package Integrity</span>
+                                <span class="text-green-600 font-semibold">100%</span>
+                                <div class="w-32 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Real-time Tracking Section -->
+
+        <!-- Donations Section -->
+        <section id="donationsSection" class="section hidden">
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Smart Donations</h2>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="stat-card bg-green-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold text-green-700">Total Donations</h3>
+                            <p class="text-3xl font-bold text-green-600">2,500 kg</p>
+                            <p class="text-sm text-green-500">Last 30 days</p>
+                        </div>
+                        <div class="stat-card bg-blue-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold text-blue-700">Food Banks Helped</h3>
+                            <p class="text-3xl font-bold text-blue-600">15</p>
+                            <p class="text-sm text-blue-500">Active partnerships</p>
+                        </div>
+                        <div class="stat-card bg-purple-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold text-purple-700">Impact</h3>
+                            <p class="text-3xl font-bold text-purple-600">7,500</p>
+                            <p class="text-sm text-purple-500">Meals provided</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricingSection" class="section hidden">
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Fair Pricing</h2>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="pricing-card border p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">For Farmers</h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Set your own prices</li>
+                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Market price insights</li>
+                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Bulk sale discounts</li>
+                            </ul>
+                        </div>
+                        <div class="pricing-card border p-4 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">For Consumers</h3>
+                            <ul class="space-y-2">
+                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Wholesale prices</li>
+                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Volume discounts</li>
+                                <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Price alerts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logistics Section -->
+        <section id="logisticsSection" class="section hidden">
+            <div class="container mx-auto px-4 py-8">
+                <h2 class="text-2xl font-bold mb-6">Smart Logistics</h2>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="logistics-card">
+                            <h3 class="text-xl font-semibold mb-4">Route Optimization</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-gray-700">Our smart algorithms optimize delivery routes to:</p>
+                                <ul class="mt-2 space-y-2">
+                                    <li class="flex items-center"><span class="text-green-500 mr-2">•</span> Reduce delivery time</li>
+                                    <li class="flex items-center"><span class="text-green-500 mr-2">•</span> Minimize fuel consumption</li>
+                                    <li class="flex items-center"><span class="text-green-500 mr-2">•</span> Maximize freshness</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="logistics-card">
+                            <h3 class="text-xl font-semibold mb-4">Real-time Updates</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-gray-700">Stay informed with:</p>
+                                <ul class="mt-2 space-y-2">
+                                    <li class="flex items-center"><span class="text-green-500 mr-2">•</span> Live location tracking</li>
+                                    <li class="flex items-center"><span class="text-green-500 mr-2">•</span> Temperature monitoring</li>
+                                    <li class="flex items-center"><span class="text-green-500 mr-2">•</span> Delivery notifications</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <div id="root"></div>
+    <script src="js/navigation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/produce.js"></script>
+    <script src="js/tracking.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
     <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
