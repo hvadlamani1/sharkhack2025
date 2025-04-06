@@ -3,17 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm to Table</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <title>SmartFarm - Direct Farm to Consumer Platform</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <nav class="navbar">
-        <div class="nav-brand">Farm to Table</div>
-        <div class="nav-links">
-            <!-- <a href="#" id="homeLink" class="nav-link active">Home</a> -->
-            <a href="#" id="loginLink" class="nav-link">Login</a>
-            <a href="#" id="dashboardLink" class="nav-link hidden">Dashboard</a>
-            <a href="#" id="logoutLink" class="nav-link hidden">Logout</a>
+<body class="bg-gray-50">
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="assets/logo.svg" alt="SmartFarm">
+                        <span class="ml-2 text-xl font-semibold text-green-600">SmartFarm</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#" id="loginLink" class="text-gray-600 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                    <a href="#" id="dashboardLink" class="hidden bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                    <a href="#" id="logoutLink" class="hidden text-gray-600 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -47,6 +56,35 @@
                         <li>Get better prices</li>
                     </ul>
                     <button onclick="showRegistrationForm('consumer')" class="cta-button">Register as Consumer</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits-section py-12 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-8">Why Choose SmartFarm?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-4xl text-green-500 mb-4">📊</div>
+                        <h3 class="text-xl font-semibold mb-2">Real-Time Tracking</h3>
+                        <p class="text-gray-600">Monitor your produce from farm to table with live updates and notifications.</p>
+                    </div>
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-4xl text-green-500 mb-4">🎯</div>
+                        <h3 class="text-xl font-semibold mb-2">Smart Donations</h3>
+                        <p class="text-gray-600">Automatically donate excess produce to local food banks and track your impact.</p>
+                    </div>
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-4xl text-green-500 mb-4">💰</div>
+                        <h3 class="text-xl font-semibold mb-2">Fair Prices</h3>
+                        <p class="text-gray-600">Dynamic pricing ensures farmers get fair value and consumers get great deals.</p>
+                    </div>
+                    <div class="benefit-card p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-4xl text-green-500 mb-4">🚛</div>
+                        <h3 class="text-xl font-semibold mb-2">Smart Logistics</h3>
+                        <p class="text-gray-600">Optimized delivery routes and real-time order tracking for maximum efficiency.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -223,6 +261,7 @@
                         <div class="form-group">
                             <label for="measurement">Measurement</label>
                             <select id="measurement" required>
+                                <option value="">Select measurement...</option>
                                 <option value="kg">Kilograms</option>
                                 <option value="lbs">Pounds</option>
                                 <option value="units">Units</option>
@@ -373,15 +412,7 @@
 
     </main>
 
-    <!-- Core utilities and authentication -->
-    <script src="js/utils.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/produce.js"></script>
-    <script src="js/orders.js"></script>
-    <script src="js/notifications.js"></script>
-    <script src="js/chatbot.js"></script>
-
-    <!-- Chatbot will be dynamically inserted here by chatbot.js -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
